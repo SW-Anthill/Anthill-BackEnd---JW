@@ -10,7 +10,7 @@ public class MemberController {
 
     @GetMapping
     public String helloMessage(){
-        return "test OK";
+        return "ok";
     }
 
 
