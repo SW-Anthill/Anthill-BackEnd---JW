@@ -13,7 +13,7 @@ Anthill/.idea/workspace.xml
 .attach_pid*
 .classpath
 .factorypath
-.gradle
+Anthill.gradle
 .idea
 .metadata
 .project
@@ -26,7 +26,7 @@ MANIFEST.MF
 _site/
 activemq-data
 bin
-build
+Anthill/build
 !/**/src/**/bin
 !/**/src/**/build
 build.log
