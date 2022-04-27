@@ -2,10 +2,15 @@ package anthill.Anthill.domain;
 
 
 
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 
+import static lombok.AccessLevel.PROTECTED;
+
+@NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
 @Getter
 @Table(name = "member")
 @Entity
