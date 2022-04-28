@@ -46,7 +46,7 @@ class MemberRepositoryTest {
 
         //then
         List<Member> members = memberRepository.findAll();
-        System.out.println(members.size());
+        Assertions.assertThat(members.size()).isEqualTo(0);
     }
 
     @DisplayName("READ 테스트")
