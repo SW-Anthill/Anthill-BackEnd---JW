@@ -14,7 +14,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public int regist(Member member) {
+    public int join(Member member) {
         return 0;
     }
 }
