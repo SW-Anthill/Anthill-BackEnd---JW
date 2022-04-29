@@ -7,11 +7,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
@@ -77,6 +78,16 @@ class MemberRepositoryTest {
         //then
         Optional<Member> result = memberRepository.findById(member.getId());
         Assertions.assertThat(result.orElse(fail).getUserId()).isEqualTo("updated");
+    }
+
+    @DisplayName("데이터 무결성 테스트")
+    @Test
+    public void dataIntegrityTest() {
+        //then
+        assertThrows(NullPointerException.class, () -> {
+            //given when
+            Member member = Member.builder().build();
+        });
     }
 
 }
