@@ -13,9 +13,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-
-@SpringBootTest
 @Transactional
+@SpringBootTest
 class MemberRepositoryTest {
 
     @Autowired
@@ -23,7 +22,7 @@ class MemberRepositoryTest {
 
     @DisplayName("CREATE 테스트")
     @Test
-    public void insertTest() {
+    public void insertSuccessTest() {
         IntStream.rangeClosed(1, 10).forEach(i -> {
             Member member = Member.builder().userId("Test" + i).build();
             memberRepository.save(member);
@@ -36,7 +35,7 @@ class MemberRepositoryTest {
 
     @DisplayName("DELETE 테스트")
     @Test
-    public void deleteTest() {
+    public void deleteSuccessTest() {
         //given
         Member member = Member.builder().userId("Test").build();
         memberRepository.save(member);
@@ -51,7 +50,7 @@ class MemberRepositoryTest {
 
     @DisplayName("READ 테스트")
     @Test
-    public void selectTest() {
+    public void selectSuccessTest() {
         //given
         Member member = Member.builder().userId("test").build();
         Member fail = Member.builder().userId("fail").build();
@@ -65,7 +64,7 @@ class MemberRepositoryTest {
 
     @DisplayName("UPDATE 테스트")
     @Test
-    public void updateTest() {
+    public void updateSuccessTest() {
         //given
         Member member = Member.builder().userId("test").build();
         Member fail = Member.builder().userId("fail").build();
