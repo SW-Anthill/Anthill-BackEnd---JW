@@ -1,16 +1,17 @@
 package anthill.Anthill.repository;
 
-import anthill.Anthill.domain.Member;
+import anthill.Anthill.domain.member.Address;
+import anthill.Anthill.domain.member.Member;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,21 +25,19 @@ class MemberRepositoryTest {
     @DisplayName("CREATE 테스트")
     @Test
     public void insertSuccessTest() {
-        IntStream.rangeClosed(1, 10).forEach(i -> {
-            Member member = Member.builder().userId("Test" + i).build();
-            memberRepository.save(member);
-        });
+
+        Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phone_number("Test").address(new Address("a1","a2","a3")).build();
+        memberRepository.save(member);
 
         List<Member> members = memberRepository.findAll();
-        Assertions.assertThat(members.size()).isEqualTo(10);
-
+        Assertions.assertThat(members.size()).isEqualTo(1);
     }
 
     @DisplayName("DELETE 테스트")
     @Test
     public void deleteSuccessTest() {
         //given
-        Member member = Member.builder().userId("Test").build();
+        Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phone_number("Test").address(new Address("a1","a2","a3")).build();
         memberRepository.save(member);
 
         //when
@@ -53,8 +52,8 @@ class MemberRepositoryTest {
     @Test
     public void selectSuccessTest() {
         //given
-        Member member = Member.builder().userId("test").build();
-        Member fail = Member.builder().userId("fail").build();
+        Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phone_number("Test").address(new Address("a1","a2","a3")).build();
+        Member fail = Member.builder().userId("fail").name("fail").nickName("fail").password("fail").phone_number("fail").address(new Address("a1","a2","a3")).build();
         memberRepository.save(member);
         //when
         Optional<Member> result = memberRepository.findById(member.getId());
@@ -67,8 +66,8 @@ class MemberRepositoryTest {
     @Test
     public void updateSuccessTest() {
         //given
-        Member member = Member.builder().userId("test").build();
-        Member fail = Member.builder().userId("fail").build();
+        Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phone_number("Test").address(new Address("a1","a2","a3")).build();
+        Member fail = Member.builder().userId("fail").name("fail").nickName("fail").password("fail").phone_number("fail").address(new Address("a1","a2","a3")).build();
         memberRepository.save(member);
 
         //when
@@ -80,13 +79,29 @@ class MemberRepositoryTest {
         Assertions.assertThat(result.orElse(fail).getUserId()).isEqualTo("updated");
     }
 
+    @Test
+    @DisplayName("회원 아이디로 조회")
+    public void selectByUserId(){
+        //given
+        Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phone_number("Test").address(new Address("a1","a2","a3")).build();
+        memberRepository.save(member);
+        //when
+        Member result = memberRepository.findByUserId("test");
+        //then
+        Assertions.assertThat(member).isEqualTo(result);
+    }
+
+
     @DisplayName("데이터 무결성 테스트")
     @Test
-    public void dataIntegrityTest() {
+    public void insertFailTest() {
+        //given
+        Member member = Member.builder().build();
+
         //then
-        assertThrows(NullPointerException.class, () -> {
-            //given when
-            Member member = Member.builder().build();
+        assertThrows(DataIntegrityViolationException.class, () -> {
+            //when
+            memberRepository.save(member);
         });
     }
 
