@@ -11,6 +11,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -91,6 +92,16 @@ class MemberRepositoryTest {
         Assertions.assertThat(member).isEqualTo(result);
     }
 
+    @Test
+    @DisplayName("아무것도 없을때 조회시")
+    public void selectByUserIdNone(){
+        //when
+        Optional<Member> result = Optional.ofNullable(memberRepository.findByUserId("None"));
+        //then
+        assertThrows(NoSuchElementException.class, () -> {
+            result.get();
+        });
+    }
 
     @DisplayName("데이터 무결성 테스트")
     @Test
