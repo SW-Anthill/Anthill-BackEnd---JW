@@ -27,7 +27,7 @@ class MemberRepositoryTest {
     @Test
     public void insertSuccessTest() {
 
-        Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phone_number("Test").address(new Address("a1","a2","a3")).build();
+        Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").address(new Address("a1","a2","a3")).build();
         memberRepository.save(member);
 
         List<Member> members = memberRepository.findAll();
@@ -38,7 +38,7 @@ class MemberRepositoryTest {
     @Test
     public void deleteSuccessTest() {
         //given
-        Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phone_number("Test").address(new Address("a1","a2","a3")).build();
+        Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").address(new Address("a1","a2","a3")).build();
         memberRepository.save(member);
 
         //when
@@ -53,8 +53,8 @@ class MemberRepositoryTest {
     @Test
     public void selectSuccessTest() {
         //given
-        Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phone_number("Test").address(new Address("a1","a2","a3")).build();
-        Member fail = Member.builder().userId("fail").name("fail").nickName("fail").password("fail").phone_number("fail").address(new Address("a1","a2","a3")).build();
+        Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").address(new Address("a1","a2","a3")).build();
+        Member fail = Member.builder().userId("fail").name("fail").nickName("fail").password("fail").phoneNumber("fail").address(new Address("a1","a2","a3")).build();
         memberRepository.save(member);
         //when
         Optional<Member> result = memberRepository.findById(member.getId());
@@ -67,8 +67,8 @@ class MemberRepositoryTest {
     @Test
     public void updateSuccessTest() {
         //given
-        Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phone_number("Test").address(new Address("a1","a2","a3")).build();
-        Member fail = Member.builder().userId("fail").name("fail").nickName("fail").password("fail").phone_number("fail").address(new Address("a1","a2","a3")).build();
+        Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").address(new Address("a1","a2","a3")).build();
+        Member fail = Member.builder().userId("fail").name("fail").nickName("fail").password("fail").phoneNumber("fail").address(new Address("a1","a2","a3")).build();
         memberRepository.save(member);
 
         //when
@@ -84,7 +84,7 @@ class MemberRepositoryTest {
     @DisplayName("회원 아이디로 조회")
     public void selectByUserId(){
         //given
-        Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phone_number("Test").address(new Address("a1","a2","a3")).build();
+        Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").address(new Address("a1","a2","a3")).build();
         memberRepository.save(member);
         //when
         Member result = memberRepository.findByUserId("test");
@@ -108,7 +108,6 @@ class MemberRepositoryTest {
     public void insertFailTest() {
         //given
         Member member = Member.builder().build();
-
         //then
         assertThrows(DataIntegrityViolationException.class, () -> {
             //when
