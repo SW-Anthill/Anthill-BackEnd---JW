@@ -20,17 +20,17 @@ public class Member {
     @Column(name = "user_id", nullable = false, unique = true, length = 20)
     private String userId;
 
-    @Column(name="password", nullable = false, length = 255)
+    @Column(name = "password", nullable = false, length = 255)
     private String password;
 
-    @Column(name="nickname", nullable = false, unique = true, length = 20)
+    @Column(name = "nickname", nullable = false, unique = true, length = 20)
     private String nickName;
 
-    @Column(name="name", nullable = false, length = 40)
+    @Column(name = "name", nullable = false, length = 40)
     private String name;
 
-    @Column(name="phone_number", nullable = false, length = 40)
-    private String phone_number;
+    @Column(name = "phone_number", nullable = false, unique = true, length = 40)
+    private String phoneNumber;
 
     @Embedded
     private Address address;
