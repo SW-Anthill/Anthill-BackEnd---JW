@@ -2,19 +2,17 @@ package anthill.Anthill.controller;
 
 import anthill.Anthill.dto.member.MemberRequestDTO;
 import anthill.Anthill.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/members")
 public class MemberController {
 
-    private MemberService memberService;
-
-    public MemberController(MemberService memberService) {
-        this.memberService = memberService;
-    }
+    private final MemberService memberService;
 
     @GetMapping
     public String helloMessage(){
