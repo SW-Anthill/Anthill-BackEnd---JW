@@ -2,21 +2,19 @@ package anthill.Anthill.service;
 
 import anthill.Anthill.domain.member.Member;
 import anthill.Anthill.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class MemberServiceImpl implements MemberService{
+@RequiredArgsConstructor
+public class MemberServiceImpl implements MemberService {
 
-    private MemberRepository memberRepository;
-
-    public MemberServiceImpl(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
-    }
+    private final MemberRepository memberRepository;
 
     @Override
-    public int join(Member member){
+    public int join(Member member) {
         memberRepository.save(member);
         return 0;
     }
@@ -35,6 +33,5 @@ public class MemberServiceImpl implements MemberService{
     public boolean checkPhoneNumberDuplicate(String phoneNumber) {
         return memberRepository.existsByPhoneNumber(phoneNumber);
     }
-
 
 }
