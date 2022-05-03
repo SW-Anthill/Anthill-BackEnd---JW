@@ -1,9 +1,10 @@
 package anthill.Anthill.controller;
 
+import anthill.Anthill.dto.member.MemberRequestDTO;
 import anthill.Anthill.service.MemberService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/members")
@@ -20,6 +21,19 @@ public class MemberController {
         return "ok";
     }
 
+    @PostMapping
+    public ResponseEntity<?> registerMember(@RequestBody MemberRequestDTO memberRequestDTO){
+        try{
+            int result = memberService.join(memberRequestDTO.toEntity());
+            return new ResponseEntity<Integer>(result, HttpStatus.CREATED);
+        }catch (Exception e){
+            return exceptionHandling(e);
+        }
+    }
 
+    private ResponseEntity<String> exceptionHandling(Exception e) {
+        e.printStackTrace();
+        return new ResponseEntity<String>("Sorry: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 }
