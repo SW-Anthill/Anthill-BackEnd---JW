@@ -1,6 +1,7 @@
 package anthill.Anthill.dto.member;
 
 import anthill.Anthill.domain.member.Address;
+import anthill.Anthill.domain.member.Member;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -32,5 +33,11 @@ public class MemberRequestDTO {
     private String phoneNumber;
 
     Address address;
+
+    public Member toEntity(){
+        return Member.builder().userId(userId).password(password).nickName(nickName).name(name).phoneNumber(phoneNumber).address(address).build();
+    }
+
+
 
 }
