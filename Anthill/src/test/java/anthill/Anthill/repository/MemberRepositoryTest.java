@@ -87,9 +87,9 @@ class MemberRepositoryTest {
         Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").address(new Address("a1","a2","a3")).build();
         memberRepository.save(member);
         //when
-        Member result = memberRepository.findByUserId("test");
+        Member result = memberRepository.findByUserId("Test");
         //then
-        Assertions.assertThat(member).isEqualTo(result);
+        Assertions.assertThat("Test").isEqualTo(result.getUserId());
     }
 
     @Test
