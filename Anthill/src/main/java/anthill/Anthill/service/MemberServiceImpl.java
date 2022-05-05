@@ -1,6 +1,7 @@
 package anthill.Anthill.service;
 
 import anthill.Anthill.domain.member.Member;
+import anthill.Anthill.dto.member.MemberRequestDTO;
 import anthill.Anthill.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,9 +15,22 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
 
     @Override
-    public int join(Member member) {
+    public void join(Member member) {
         memberRepository.save(member);
-        return 0;
+    }
+
+    @Override
+    public boolean validateIsDuplicate(MemberRequestDTO member) {
+        if(checkPhoneNumberDuplicate(member.getPhoneNumber())){
+            return false;
+        }
+        if(checkNicknameDuplicate(member.getNickName())){
+            return false;
+        }
+        if(checkUserIdDuplicate(member.getUserId())){
+            return false;
+        }
+        return true;
     }
 
     @Override
