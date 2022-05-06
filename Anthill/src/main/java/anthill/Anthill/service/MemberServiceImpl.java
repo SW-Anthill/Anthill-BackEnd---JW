@@ -22,15 +22,15 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean validateIsDuplicate(MemberRequestDTO member) {
         if(checkPhoneNumberDuplicate(member.getPhoneNumber())){
-            return false;
+            return true;
         }
         if(checkNicknameDuplicate(member.getNickName())){
-            return false;
+            return true;
         }
         if(checkUserIdDuplicate(member.getUserId())){
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override
