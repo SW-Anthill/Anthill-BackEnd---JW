@@ -2,16 +2,25 @@ package anthill.Anthill.service;
 
 import anthill.Anthill.domain.member.Address;
 import anthill.Anthill.domain.member.Member;
+import anthill.Anthill.dto.member.MemberRequestDTO;
 import anthill.Anthill.repository.MemberRepository;
+import lombok.Setter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import javax.transaction.Transactional;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
+
+
 
 @Transactional
 @SpringBootTest
@@ -19,6 +28,34 @@ class MemberServiceImplTest {
 
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    MemberService memberService;
+
+    @Test
+    @DisplayName("회원 가입 정상 로직")
+    public void memberNotDuplicateTest(){
+        Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").address(new Address("a1", "a2", "a3")).build();
+        memberService.join(member);
+        assertThat(member).isEqualTo(memberRepository.findByUserId("Test").get());
+    }
+
+
+    @Test
+    @DisplayName("회원 가입 중복 발생")
+    public void memberDulicateTest(){
+
+        Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").address(new Address("a1", "a2", "a3")).build();
+
+        memberService.join(member);
+        MemberRequestDTO member1 = MemberRequestDTO.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").build();
+
+        boolean result = memberService.validateIsDuplicate(member1);
+        Assertions.assertEquals(result,true);
+
+    }
+
+
 
     @Test
     @DisplayName("회원 아이디 유효성 검증")
