@@ -1,6 +1,7 @@
 package anthill.Anthill.controller;
 
 import anthill.Anthill.dto.member.MemberRequestDTO;
+import anthill.Anthill.dto.member.MemberResponseDTO;
 import anthill.Anthill.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,8 +23,11 @@ public class MemberController {
     @PostMapping
     public ResponseEntity<?> registerMember(@RequestBody MemberRequestDTO memberRequestDTO){
         try{
-            int result = memberService.join(memberRequestDTO.toEntity());
-            return new ResponseEntity<Integer>(result, HttpStatus.CREATED);
+            if(memberService.validateIsDuplicate(memberRequestDTO)){
+                return new ResponseEntity<String>("Duplicated", HttpStatus.CONFLICT);
+            }
+            memberService.join(memberRequestDTO.toEntity());
+            return new ResponseEntity<String>("회원가입 완료", HttpStatus.CREATED);
         }catch (Exception e){
             return exceptionHandling(e);
         }
