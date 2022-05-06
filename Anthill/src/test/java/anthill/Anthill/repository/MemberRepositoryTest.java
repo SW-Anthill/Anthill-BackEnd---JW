@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -87,23 +89,46 @@ class MemberRepositoryTest {
         Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").address(new Address("a1","a2","a3")).build();
         memberRepository.save(member);
         //when
-        Member result = memberRepository.findByUserId("Test");
+        Member result = memberRepository.findByUserId("Test").get();
         //then
         Assertions.assertThat("Test").isEqualTo(result.getUserId());
     }
 
     @Test
-    @DisplayName("아무것도 없을때 조회시")
+    @DisplayName("아무것도 없을때 조회시엔 NoSuchElementException 발생")
     public void selectByUserIdNone(){
         //when
-        Optional<Member> result = Optional.ofNullable(memberRepository.findByUserId("None"));
+        Optional<Member> result = memberRepository.findByUserId("None");
         //then
         assertThrows(NoSuchElementException.class, () -> {
             result.get();
         });
     }
 
-    @DisplayName("데이터 무결성 테스트")
+    @Test
+    @DisplayName("아무것도 없을때 삭제시엔 EmptyResultDataAccessException 발생")
+    public void deleteByUserIdNone(){
+        assertThrows(EmptyResultDataAccessException.class, () -> {
+            memberRepository.deleteById(3L);
+        });
+
+    }
+
+    @Test
+    @DisplayName("Unique값이 겹칠 경우 DataIntegrityViolationException 발생")
+    public void insertDuplicateTest(){
+        //given
+        Member member1 = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").address(new Address("a1","a2","a3")).build();
+        memberRepository.save(member1);
+
+        Member member2 = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").address(new Address("a1","a2","a3")).build();
+        assertThrows(DataIntegrityViolationException.class, ()->{
+            memberRepository.save(member2);
+        });
+
+    }
+
+    @DisplayName("DB NotNull으로 설정된 값들을 그냥 넣어 버리면 DataIntegrityViolationException 발생")
     @Test
     public void insertFailTest() {
         //given
@@ -113,6 +138,21 @@ class MemberRepositoryTest {
             //when
             memberRepository.save(member);
         });
+    }
+
+    @Autowired
+    private EntityManager entityManager;
+
+    @DisplayName("영속성 컨텍스트 테스트를 clear시키면 동일한 객체x")
+    @Test
+    public void EntityContextTest(){
+        Member member1 = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").address(new Address("a1","a2","a3")).build();
+        memberRepository.save(member1);
+        entityManager.clear();
+
+        Member member2 = memberRepository.findByUserId("Test").get();
+        Assertions.assertThat(member1).isNotEqualTo(member2);
+        //memberRepository.flush();
     }
 
 }
