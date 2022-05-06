@@ -2,11 +2,15 @@ package anthill.Anthill.dto.member;
 
 import anthill.Anthill.domain.member.Address;
 import anthill.Anthill.domain.member.Member;
+import lombok.Builder;
+import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+@Builder
+@Getter
 public class MemberRequestDTO {
     //@NotNull : Null만 허용하지 않음 "", " "허용
     //@NotEmpty : null, "" 허용하지 않음 " "허용
@@ -37,7 +41,5 @@ public class MemberRequestDTO {
     public Member toEntity(){
         return Member.builder().userId(userId).password(password).nickName(nickName).name(name).phoneNumber(phoneNumber).address(address).build();
     }
-
-
 
 }
