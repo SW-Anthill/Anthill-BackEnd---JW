@@ -22,20 +22,11 @@ public class MemberController {
 
     @PostMapping
     public ResponseEntity<?> registerMember(@RequestBody MemberRequestDTO memberRequestDTO){
-        try{
             if(memberService.validateIsDuplicate(memberRequestDTO)){
                 return new ResponseEntity<String>("Duplicated", HttpStatus.CONFLICT);
             }
             memberService.join(memberRequestDTO.toEntity());
             return new ResponseEntity<String>("회원가입 완료", HttpStatus.CREATED);
-        }catch (Exception e){
-            return exceptionHandling(e);
-        }
-    }
-
-    private ResponseEntity<String> exceptionHandling(Exception e) {
-        e.printStackTrace();
-        return new ResponseEntity<String>("Sorry: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
