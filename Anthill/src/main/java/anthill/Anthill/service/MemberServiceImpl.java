@@ -21,13 +21,13 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean validateIsDuplicate(MemberRequestDTO member) {
-        if(checkPhoneNumberDuplicate(member.getPhoneNumber())){
+        if (checkPhoneNumberDuplicate(member.getPhoneNumber())) {
             return true;
         }
-        if(checkNicknameDuplicate(member.getNickName())){
+        if (checkNicknameDuplicate(member.getNickName())) {
             return true;
         }
-        if(checkUserIdDuplicate(member.getUserId())){
+        if (checkUserIdDuplicate(member.getUserId())) {
             return true;
         }
         return false;
