@@ -40,7 +40,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("memberRequestDTO의 입력값들이 유효하지 않을때")
+    @DisplayName("memberRequestDTO의 입력값들이 유효X")
     public void memberPostDataInValidateTest() throws Exception {
         //given
         MemberRequestDTO memberRequestDTO = MemberRequestDTO.builder().build();
@@ -54,6 +54,23 @@ class MemberControllerTest {
                 )
                 //then
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("memberRequestDTO의 입력값들이 유효O")
+    public void memberPostDataValidateTest() throws Exception {
+        //given
+        MemberRequestDTO memberRequestDTO = MemberRequestDTO.builder().userId("junwooKim").name("KIM").nickName("junuuu").password("123456789").phoneNumber("01012345678").build();
+        String body = (new ObjectMapper()).writeValueAsString(memberRequestDTO);
+
+        //when
+        mvc.perform(post("/members")
+                        .content(body)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                )
+                //then
+                .andExpect(status().isCreated());
     }
 
 
