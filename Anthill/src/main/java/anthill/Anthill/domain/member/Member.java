@@ -34,4 +34,9 @@ public class Member {
 
     @Embedded
     private Address address;
+
+    public void changeNickName(String nickName){
+        this.nickName = nickName;
+    }
+
 }
