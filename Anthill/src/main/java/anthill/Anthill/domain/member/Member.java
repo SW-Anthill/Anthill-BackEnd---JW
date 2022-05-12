@@ -1,6 +1,7 @@
 package anthill.Anthill.domain.member;
 
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Getter
 @Table(name = "member")
 @Entity
+@DynamicUpdate
 public class Member {
 
     @Id
