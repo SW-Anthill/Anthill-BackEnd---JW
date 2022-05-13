@@ -4,33 +4,28 @@ import anthill.Anthill.domain.member.Address;
 import anthill.Anthill.domain.member.Member;
 import anthill.Anthill.dto.member.MemberRequestDTO;
 import anthill.Anthill.repository.MemberRepository;
-import lombok.Setter;
+
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
-
-import javax.transaction.Transactional;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 
-
-@Transactional
-@SpringBootTest
+@DataJpaTest
 class MemberServiceImplTest {
 
     @Autowired
     MemberRepository memberRepository;
 
-    @Autowired
     MemberService memberService;
+
+    @BeforeEach
+    void setUp() {
+        memberService = new MemberServiceImpl(memberRepository);
+    }
 
     @Test
     @DisplayName("회원 가입 정상 로직")
@@ -54,8 +49,6 @@ class MemberServiceImplTest {
         Assertions.assertEquals(result,true);
 
     }
-
-
 
     @Test
     @DisplayName("회원 아이디 유효성 검증")
