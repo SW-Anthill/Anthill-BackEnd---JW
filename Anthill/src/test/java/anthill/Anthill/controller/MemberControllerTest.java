@@ -10,11 +10,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
 
 
 @WebMvcTest
@@ -33,8 +34,10 @@ class MemberControllerTest {
         String ok = "ok";
 
         //when
-        mvc.perform(get("/members"))
-                //then
+        ResultActions resultActions = mvc.perform(get("/members"));
+
+        //then
+        resultActions
                 .andExpect(status().isOk())
                 .andExpect(content().string(ok));
     }
@@ -47,12 +50,14 @@ class MemberControllerTest {
         String body = (new ObjectMapper()).writeValueAsString(memberRequestDTO);
 
         //when
-        mvc.perform(post("/members")
-                        .content(body)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                )
-                //then
+        ResultActions resultActions = mvc.perform(post("/members")
+                .content(body)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        );
+
+        //then
+        resultActions
                 .andExpect(status().isBadRequest());
     }
 
@@ -64,15 +69,16 @@ class MemberControllerTest {
         String body = (new ObjectMapper()).writeValueAsString(memberRequestDTO);
 
         //when
-        mvc.perform(post("/members")
-                        .content(body)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                )
-                //then
+        ResultActions resultActions = mvc.perform(post("/members")
+                .content(body)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        );
+
+        //then
+        resultActions
                 .andExpect(status().isCreated());
     }
-
 
 
 }
