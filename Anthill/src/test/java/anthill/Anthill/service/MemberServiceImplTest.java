@@ -38,7 +38,7 @@ class MemberServiceImplTest {
 
     @Test
     @DisplayName("회원 가입 중복 발생")
-    public void memberDulicateTest(){
+    public void memberDuplicateTest(){
 
         Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").address(new Address("a1", "a2", "a3")).build();
 
@@ -51,8 +51,8 @@ class MemberServiceImplTest {
     }
 
     @Test
-    @DisplayName("회원 아이디 유효성 검증")
-    public void validateUserIdTest() {
+    @DisplayName("회원 아이디 중복 검증")
+    public void userIdDuplicateTest() {
         //given
         Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").address(new Address("a1", "a2", "a3")).build();
         memberRepository.save(member);
@@ -65,8 +65,8 @@ class MemberServiceImplTest {
     }
 
     @Test
-    @DisplayName("회원 닉네임 유효성 검증")
-    public void validateNickNameTest() {
+    @DisplayName("회원 닉네임 중복 검증")
+    public void nickNameDuplicateTest() {
         //given
         Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").address(new Address("a1", "a2", "a3")).build();
         memberRepository.save(member);
@@ -79,8 +79,8 @@ class MemberServiceImplTest {
     }
 
     @Test
-    @DisplayName("회원 휴대전화 유효성 검증")
-    public void validatePhoneNumberTest() {
+    @DisplayName("회원 휴대전화 중복 검증")
+    public void phoneNumberDuplicateTest() {
         //given
         Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("01012345678").address(new Address("a1", "a2", "a3")).build();
         memberRepository.save(member);
