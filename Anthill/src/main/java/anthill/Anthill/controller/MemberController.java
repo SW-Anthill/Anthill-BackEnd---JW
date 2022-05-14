@@ -23,13 +23,13 @@ public class MemberController {
     }
 
     @PostMapping
-    public ResponseEntity<?> registerMember(@Valid @RequestBody MemberRequestDTO memberRequestDTO) {
+    public ResponseEntity<String> registerMember(@Valid @RequestBody MemberRequestDTO memberRequestDTO) {
 
         if (memberService.validateIsDuplicate(memberRequestDTO)) {
-            return new ResponseEntity<String>("Duplicated", HttpStatus.CONFLICT);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("회원 데이터 중복 발생");
         }
         memberService.join(memberRequestDTO.toEntity());
-        return new ResponseEntity<String>("회원가입 완료", HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 완료");
     }
 
 }
