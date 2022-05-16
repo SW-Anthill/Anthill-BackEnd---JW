@@ -9,6 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -24,18 +25,38 @@ class DuplicateControllerTest {
 
     @Test
     @DisplayName("닉네임 중복 테스트 false 반환")
-    public void checkNicknameDuplicateTest() throws Exception{
+    public void checkNicknameDuplicateFalseTest() throws Exception {
         //given
-        boolean response = true;
+        String response = "false";
+        boolean test = false;
         String nickName = "test";
+        given(memberService.checkNicknameDuplicate(nickName)).willReturn(test);
 
         //when
-        ResultActions resultActions = mvc.perform(get("/user-nickname/"+nickName));
+        ResultActions resultActions = mvc.perform(get("/user-nickname/" + nickName));
 
         //then
         resultActions
                 .andExpect(status().isOk())
-                .andExpect(content().string("false"));
+                .andExpect(content().string(response));
+    }
+
+    @Test
+    @DisplayName("닉네임 중복 테스트 true 반환")
+    public void checkNicknameDuplicateTrueTest() throws Exception {
+        //given
+        String response = "true";
+        boolean test = true;
+        String nickName = "test";
+        given(memberService.checkNicknameDuplicate(nickName)).willReturn(test);
+
+        //when
+        ResultActions resultActions = mvc.perform(get("/user-nickname/" + nickName));
+
+        //then
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(content().string(response));
     }
 
 }
