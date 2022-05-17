@@ -9,7 +9,6 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Getter
 public class MemberRequestDTO {
@@ -39,8 +38,17 @@ public class MemberRequestDTO {
 
     Address address;
 
+    @Builder
+    public MemberRequestDTO(String userId, String password, String nickName, String name, String phoneNumber, Address address) {
+        this.userId = userId;
+        this.password = password;
+        this.nickName = nickName;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+    }
+
     public Member toEntity() {
         return Member.builder().userId(userId).password(password).nickName(nickName).name(name).phoneNumber(phoneNumber).address(address).build();
     }
-
 }
