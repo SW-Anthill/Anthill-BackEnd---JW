@@ -1,5 +1,6 @@
 package anthill.Anthill.controller;
 
+import anthill.Anthill.dto.member.MemberLoginRequestDTO;
 import anthill.Anthill.dto.member.MemberRequestDTO;
 import anthill.Anthill.dto.member.MemberResponseDTO;
 import anthill.Anthill.service.MemberService;
@@ -30,6 +31,15 @@ public class MemberController {
         }
         memberService.join(memberRequestDTO.toEntity());
         return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 완료");
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> loginMember(@RequestBody MemberLoginRequestDTO memberLoginRequestDTO){
+
+        if(memberService.login(memberLoginRequestDTO)){
+            return ResponseEntity.status(HttpStatus.OK).body("로그인 완료");
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
     }
 
 }
