@@ -1,6 +1,7 @@
 package anthill.Anthill.service;
 
 import anthill.Anthill.domain.member.Member;
+import anthill.Anthill.dto.member.MemberLoginRequestDTO;
 import anthill.Anthill.dto.member.MemberRequestDTO;
 import anthill.Anthill.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,16 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean checkPhoneNumberDuplicate(String phoneNumber) {
         return memberRepository.existsByPhoneNumber(phoneNumber);
+    }
+
+    @Override
+    public boolean login(MemberLoginRequestDTO memberLoginRequestDTO) {
+        Optional<Member> userId = memberRepository.findByUserId(memberLoginRequestDTO.getUserId());
+        //Optional 사용했으니 isPresent 대신 userId.orElseThrow()를 쓰는게 좋아보인다
+        if(!userId.isPresent()){
+            return false;
+        }
+        return userId.get().getPassword().equals(memberLoginRequestDTO.getPassword());
     }
 
 }
