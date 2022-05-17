@@ -76,15 +76,15 @@ class MemberRepositoryTest {
         //given
         Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").address(new Address("a1", "a2", "a3")).build();
         Member fail = Member.builder().userId("fail").name("fail").nickName("fail").password("fail").phoneNumber("fail").address(new Address("a1", "a2", "a3")).build();
-        memberRepository.saveAndFlush(member);
+        memberRepository.save(member);
 
         //when
-        member.changeNickName("updated");
-        memberRepository.saveAndFlush(member);
+        String updated = "updated";
+        member.changeNickName(updated);
 
         //then
         Optional<Member> result = memberRepository.findById(member.getId());
-        Assertions.assertThat(result.orElse(fail).getNickName()).isEqualTo("updated");
+        Assertions.assertThat(result.orElse(fail).getNickName()).isEqualTo(updated);
     }
 
     @Test
