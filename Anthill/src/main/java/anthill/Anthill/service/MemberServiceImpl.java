@@ -51,12 +51,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean login(MemberLoginRequestDTO memberLoginRequestDTO) {
-        Optional<Member> userId = memberRepository.findByUserId(memberLoginRequestDTO.getUserId());
+        Optional<Member> user = memberRepository.findByUserId(memberLoginRequestDTO.getUserId());
         //Optional 사용했으니 isPresent 대신 userId.orElseThrow()를 쓰는게 좋아보인다
-        if(!userId.isPresent()){
-            return false;
-        }
-        return userId.get().getPassword().equals(memberLoginRequestDTO.getPassword());
+
+        return user.orElseThrow(() -> new IllegalArgumentException())
+                   .getPassword()
+                   .equals(memberLoginRequestDTO.getPassword());
     }
 
 }
