@@ -30,21 +30,36 @@ class MemberRepositoryTest {
     public void insertSuccessTest() {
 
         //given
-        Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").address(new Address("a1", "a2", "a3")).build();
+        Member member = Member.builder()
+                              .userId("Test")
+                              .name("Test")
+                              .nickName("Test")
+                              .password("Test")
+                              .phoneNumber("Test")
+                              .address(new Address("a1", "a2", "a3"))
+                              .build();
 
         //when
         memberRepository.save(member);
 
         //then
         List<Member> members = memberRepository.findAll();
-        Assertions.assertThat(members.size()).isEqualTo(1);
+        Assertions.assertThat(members.size())
+                  .isEqualTo(1);
     }
 
     @DisplayName("DELETE 테스트")
     @Test
     public void deleteSuccessTest() {
         //given
-        Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").address(new Address("a1", "a2", "a3")).build();
+        Member member = Member.builder()
+                              .userId("Test")
+                              .name("Test")
+                              .nickName("Test")
+                              .password("Test")
+                              .phoneNumber("Test")
+                              .address(new Address("a1", "a2", "a3"))
+                              .build();
         memberRepository.save(member);
 
         //when
@@ -52,30 +67,61 @@ class MemberRepositoryTest {
 
         //then
         List<Member> members = memberRepository.findAll();
-        Assertions.assertThat(members.size()).isEqualTo(0);
+        Assertions.assertThat(members.size())
+                  .isEqualTo(0);
     }
 
     @DisplayName("READ 테스트")
     @Test
     public void selectSuccessTest() {
         //given
-        Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").address(new Address("a1", "a2", "a3")).build();
-        Member fail = Member.builder().userId("fail").name("fail").nickName("fail").password("fail").phoneNumber("fail").address(new Address("a1", "a2", "a3")).build();
+        Member member = Member.builder()
+                              .userId("Test")
+                              .name("Test")
+                              .nickName("Test")
+                              .password("Test")
+                              .phoneNumber("Test")
+                              .address(new Address("a1", "a2", "a3"))
+                              .build();
+        Member fail = Member.builder()
+                            .userId("fail")
+                            .name("fail")
+                            .nickName("fail")
+                            .password("fail")
+                            .phoneNumber("fail")
+                            .address(new Address("a1", "a2", "a3"))
+                            .build();
         memberRepository.save(member);
 
         //when
         Optional<Member> result = memberRepository.findById(member.getId());
 
         //then
-        Assertions.assertThat(member.getUserId()).isEqualTo(result.orElse(fail).getUserId());
+        Assertions.assertThat(member.getUserId())
+                  .isEqualTo(result.orElse(fail)
+                                   .getUserId());
     }
 
     @DisplayName("UPDATE 테스트")
     @Test
     public void updateSuccessTest() {
         //given
-        Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").address(new Address("a1", "a2", "a3")).build();
-        Member fail = Member.builder().userId("fail").name("fail").nickName("fail").password("fail").phoneNumber("fail").address(new Address("a1", "a2", "a3")).build();
+        Member member = Member.builder()
+                              .userId("Test")
+                              .name("Test")
+                              .nickName("Test")
+                              .password("Test")
+                              .phoneNumber("Test")
+                              .address(new Address("a1", "a2", "a3"))
+                              .build();
+        Member fail = Member.builder()
+                            .userId("fail")
+                            .name("fail")
+                            .nickName("fail")
+                            .password("fail")
+                            .phoneNumber("fail")
+                            .address(new Address("a1", "a2", "a3"))
+                            .build();
         memberRepository.save(member);
 
         //when
@@ -84,21 +130,32 @@ class MemberRepositoryTest {
 
         //then
         Optional<Member> result = memberRepository.findById(member.getId());
-        Assertions.assertThat(result.orElse(fail).getNickName()).isEqualTo(updated);
+        Assertions.assertThat(result.orElse(fail)
+                                    .getNickName())
+                  .isEqualTo(updated);
     }
 
     @Test
     @DisplayName("회원 아이디로 조회")
     public void selectByUserId() {
         //given
-        Member member = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").address(new Address("a1", "a2", "a3")).build();
+        Member member = Member.builder()
+                              .userId("Test")
+                              .name("Test")
+                              .nickName("Test")
+                              .password("Test")
+                              .phoneNumber("Test")
+                              .address(new Address("a1", "a2", "a3"))
+                              .build();
         memberRepository.save(member);
 
         //when
-        Member result = memberRepository.findByUserId("Test").get();
+        Member result = memberRepository.findByUserId("Test")
+                                        .get();
 
         //then
-        Assertions.assertThat("Test").isEqualTo(result.getUserId());
+        Assertions.assertThat("Test")
+                  .isEqualTo(result.getUserId());
     }
 
     @Test
@@ -131,9 +188,23 @@ class MemberRepositoryTest {
     @DisplayName("Unique값이 겹칠 경우 DataIntegrityViolationException 발생")
     public void insertDuplicateTest() {
         //given
-        Member member1 = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").address(new Address("a1", "a2", "a3")).build();
+        Member member1 = Member.builder()
+                               .userId("Test")
+                               .name("Test")
+                               .nickName("Test")
+                               .password("Test")
+                               .phoneNumber("Test")
+                               .address(new Address("a1", "a2", "a3"))
+                               .build();
         memberRepository.save(member1);
-        Member member2 = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").address(new Address("a1", "a2", "a3")).build();
+        Member member2 = Member.builder()
+                               .userId("Test")
+                               .name("Test")
+                               .nickName("Test")
+                               .password("Test")
+                               .phoneNumber("Test")
+                               .address(new Address("a1", "a2", "a3"))
+                               .build();
 
         //then
         assertThrows(DataIntegrityViolationException.class, () -> {
@@ -147,7 +218,8 @@ class MemberRepositoryTest {
     @Test
     public void insertFailTest() {
         //given
-        Member member = Member.builder().build();
+        Member member = Member.builder()
+                              .build();
 
         //then
         assertThrows(DataIntegrityViolationException.class, () -> {
@@ -163,15 +235,24 @@ class MemberRepositoryTest {
     @Test
     public void EntityContextTest() {
         //given
-        Member member1 = Member.builder().userId("Test").name("Test").nickName("Test").password("Test").phoneNumber("Test").address(new Address("a1", "a2", "a3")).build();
+        Member member1 = Member.builder()
+                               .userId("Test")
+                               .name("Test")
+                               .nickName("Test")
+                               .password("Test")
+                               .phoneNumber("Test")
+                               .address(new Address("a1", "a2", "a3"))
+                               .build();
         memberRepository.save(member1);
         entityManager.clear();
 
         //when
-        Member member2 = memberRepository.findByUserId("Test").get();
+        Member member2 = memberRepository.findByUserId("Test")
+                                         .get();
 
         //then
-        Assertions.assertThat(member1).isNotEqualTo(member2);
+        Assertions.assertThat(member1)
+                  .isNotEqualTo(member2);
 
     }
 

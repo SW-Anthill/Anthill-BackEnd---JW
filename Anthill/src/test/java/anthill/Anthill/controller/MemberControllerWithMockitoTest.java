@@ -29,7 +29,8 @@ public class MemberControllerWithMockitoTest {
 
     @BeforeEach
     public void init() {
-        mockMvc = MockMvcBuilders.standaloneSetup(memberController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(memberController)
+                                 .build();
     }
 
     @Test
@@ -39,7 +40,7 @@ public class MemberControllerWithMockitoTest {
         String ok = "ok";
 
         //when
-        ResultActions resultActions= mockMvc.perform(get("/members"));
+        ResultActions resultActions = mockMvc.perform(get("/members"));
 
         //then
         resultActions

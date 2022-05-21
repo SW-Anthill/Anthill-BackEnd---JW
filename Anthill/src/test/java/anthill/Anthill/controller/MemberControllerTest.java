@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -51,7 +52,8 @@ class MemberControllerTest {
     @DisplayName("회원가입 입력값들이 유효하지 않음")
     public void memberPostDataInValidateTest() throws Exception {
         //given
-        MemberRequestDTO memberRequestDTO = MemberRequestDTO.builder().build();
+        MemberRequestDTO memberRequestDTO = MemberRequestDTO.builder()
+                                                            .build();
         String body = (new ObjectMapper()).writeValueAsString(memberRequestDTO);
 
         //when
@@ -97,7 +99,13 @@ class MemberControllerTest {
     @DisplayName("회원 중복 발생시 409 상태코드 반환")
     public void memberDuplicateTest() throws Exception {
         //given
-        MemberRequestDTO memberRequestDTO = MemberRequestDTO.builder().userId("junwooKim").name("KIM").nickName("junuuu").password("123456789").phoneNumber("01012345678").build();
+        MemberRequestDTO memberRequestDTO = MemberRequestDTO.builder()
+                                                            .userId("junwooKim")
+                                                            .name("KIM")
+                                                            .nickName("junuuu")
+                                                            .password("123456789")
+                                                            .phoneNumber("01012345678")
+                                                            .build();
         String body = (new ObjectMapper()).writeValueAsString(memberRequestDTO);
         boolean duplicateResult = true;
         given(memberService.validateIsDuplicate(any())).willReturn(duplicateResult);
@@ -119,7 +127,13 @@ class MemberControllerTest {
     @DisplayName("회원 중복 발생안됬을 시 201 상태코드 반환")
     public void memberNonDuplicateTest() throws Exception {
         //given
-        MemberRequestDTO memberRequestDTO = MemberRequestDTO.builder().userId("junwooKim").name("KIM").nickName("junuuu").password("123456789").phoneNumber("01012345678").build();
+        MemberRequestDTO memberRequestDTO = MemberRequestDTO.builder()
+                                                            .userId("junwooKim")
+                                                            .name("KIM")
+                                                            .nickName("junuuu")
+                                                            .password("123456789")
+                                                            .phoneNumber("01012345678")
+                                                            .build();
         String body = (new ObjectMapper()).writeValueAsString(memberRequestDTO);
         boolean duplicateResult = false;
         given(memberService.validateIsDuplicate(any())).willReturn(duplicateResult);
@@ -140,7 +154,10 @@ class MemberControllerTest {
     @DisplayName("로그인 성공시 200 상태코드 반환")
     public void memberLoginSuccessTest() throws Exception {
         //given
-        MemberLoginRequestDTO memberLoginRequestDTO = MemberLoginRequestDTO.builder().userId("test").password("123456789").build();
+        MemberLoginRequestDTO memberLoginRequestDTO = MemberLoginRequestDTO.builder()
+                                                                           .userId("test")
+                                                                           .password("123456789")
+                                                                           .build();
         String body = (new ObjectMapper()).writeValueAsString(memberLoginRequestDTO);
         boolean loginResult = true;
         given(memberService.login(any())).willReturn(loginResult);
@@ -158,13 +175,15 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("로그인 실패시 409 상태코드 반환")
+    @DisplayName("로그인 실패시 401 상태코드 반환")
     public void memberLoginFailTest() throws Exception {
         //given
-        MemberLoginRequestDTO memberLoginRequestDTO = MemberLoginRequestDTO.builder().userId("test").password("123456789").build();
+        MemberLoginRequestDTO memberLoginRequestDTO = MemberLoginRequestDTO.builder()
+                                                                           .userId("test")
+                                                                           .password("123456789")
+                                                                           .build();
         String body = (new ObjectMapper()).writeValueAsString(memberLoginRequestDTO);
-        boolean loginResult = false;
-        given(memberService.login(any())).willReturn(loginResult);
+        given(memberService.login(any())).willThrow(new IllegalArgumentException());
 
         //when
         ResultActions resultActions = mvc.perform(post("/members/login")

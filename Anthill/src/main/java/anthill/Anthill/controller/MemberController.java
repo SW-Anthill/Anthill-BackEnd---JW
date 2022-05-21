@@ -14,6 +14,7 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/members")
+
 public class MemberController {
 
     private final MemberService memberService;
@@ -27,19 +28,24 @@ public class MemberController {
     public ResponseEntity<String> registerMember(@Valid @RequestBody MemberRequestDTO memberRequestDTO) {
 
         if (memberService.validateIsDuplicate(memberRequestDTO)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("회원 데이터 중복 발생");
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                                 .body("회원 데이터 중복 발생");
         }
-        memberService.join(memberRequestDTO.toEntity());
-        return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 완료");
+
+        memberService.join(memberRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                             .body("회원가입 완료");
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginMember(@RequestBody MemberLoginRequestDTO memberLoginRequestDTO){
+    public ResponseEntity<String> loginMember(@RequestBody MemberLoginRequestDTO memberLoginRequestDTO) {
 
-        if(memberService.login(memberLoginRequestDTO)){
-            return ResponseEntity.status(HttpStatus.OK).body("로그인 완료");
+        if (memberService.login(memberLoginRequestDTO)) {
+            return ResponseEntity.status(HttpStatus.OK)
+                                 .body("로그인 완료");
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                             .body("로그인 실패");
     }
 
 }
