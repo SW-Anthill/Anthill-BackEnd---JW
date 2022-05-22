@@ -5,7 +5,7 @@ import anthill.Anthill.dto.member.MemberLoginRequestDTO;
 import anthill.Anthill.dto.member.MemberRequestDTO;
 
 public interface MemberService {
-    void join(Member member);
+    void join(MemberRequestDTO memberRequestDTO);
 
     boolean validateIsDuplicate(MemberRequestDTO memberRequestDTO);
 

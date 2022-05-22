@@ -5,6 +5,7 @@ import anthill.Anthill.dto.member.MemberLoginRequestDTO;
 import anthill.Anthill.dto.member.MemberRequestDTO;
 import anthill.Anthill.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,8 +17,9 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
 
     @Override
-    public void join(Member member) {
-        memberRepository.save(member);
+    public void join(MemberRequestDTO memberRequestDTO) {
+        memberRequestDTO.hashingPassword();
+        memberRepository.save(memberRequestDTO.toEntity());
     }
 
     @Override
@@ -52,11 +54,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean login(MemberLoginRequestDTO memberLoginRequestDTO) {
         Optional<Member> user = memberRepository.findByUserId(memberLoginRequestDTO.getUserId());
-        //Optional 사용했으니 isPresent 대신 userId.orElseThrow()를 쓰는게 좋아보인다
 
-        return user.orElseThrow(() -> new IllegalArgumentException())
-                   .getPassword()
-                   .equals(memberLoginRequestDTO.getPassword());
+        String userPassword = user.orElseThrow(() -> new IllegalArgumentException())
+                                  .getPassword();
+
+        return BCrypt.checkpw(memberLoginRequestDTO.getPassword(), userPassword);
     }
 
 }
