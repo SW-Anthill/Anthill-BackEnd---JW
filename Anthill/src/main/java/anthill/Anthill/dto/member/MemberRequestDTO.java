@@ -3,6 +3,7 @@ package anthill.Anthill.dto.member;
 import anthill.Anthill.domain.member.Address;
 import anthill.Anthill.domain.member.Member;
 import lombok.*;
+import org.mindrot.jbcrypt.BCrypt;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -46,6 +47,10 @@ public class MemberRequestDTO {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.address = address;
+    }
+
+    public void hashingPassword(){
+        this.password = BCrypt.hashpw(this.password, BCrypt.gensalt());
     }
 
     public Member toEntity() {
