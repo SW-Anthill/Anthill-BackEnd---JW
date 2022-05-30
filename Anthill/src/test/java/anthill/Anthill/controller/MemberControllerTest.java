@@ -61,7 +61,6 @@ class MemberControllerTest {
                 .content(body)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-
         );
 
         //then
@@ -73,14 +72,7 @@ class MemberControllerTest {
     @DisplayName("회원가입 입력값들이 유효함")
     public void memberPostDataValidateTest() throws Exception {
         //given
-        MemberRequestDTO memberRequestDTO = MemberRequestDTO
-                .builder()
-                .userId("junwooKim")
-                .name("KIM")
-                .nickName("junuuu")
-                .password("123456789")
-                .phoneNumber("01012345678")
-                .build();
+        MemberRequestDTO memberRequestDTO = getMemberRequestDTO();
         String body = (new ObjectMapper()).writeValueAsString(memberRequestDTO);
 
         //when
@@ -99,13 +91,7 @@ class MemberControllerTest {
     @DisplayName("회원 중복 발생시 409 상태코드 반환")
     public void memberDuplicateTest() throws Exception {
         //given
-        MemberRequestDTO memberRequestDTO = MemberRequestDTO.builder()
-                                                            .userId("junwooKim")
-                                                            .name("KIM")
-                                                            .nickName("junuuu")
-                                                            .password("123456789")
-                                                            .phoneNumber("01012345678")
-                                                            .build();
+        MemberRequestDTO memberRequestDTO = getMemberRequestDTO();
         String body = (new ObjectMapper()).writeValueAsString(memberRequestDTO);
         boolean duplicateResult = true;
         given(memberService.validateIsDuplicate(any())).willReturn(duplicateResult);
@@ -127,13 +113,7 @@ class MemberControllerTest {
     @DisplayName("회원 중복 발생안됬을 시 201 상태코드 반환")
     public void memberNonDuplicateTest() throws Exception {
         //given
-        MemberRequestDTO memberRequestDTO = MemberRequestDTO.builder()
-                                                            .userId("junwooKim")
-                                                            .name("KIM")
-                                                            .nickName("junuuu")
-                                                            .password("123456789")
-                                                            .phoneNumber("01012345678")
-                                                            .build();
+        MemberRequestDTO memberRequestDTO = getMemberRequestDTO();
         String body = (new ObjectMapper()).writeValueAsString(memberRequestDTO);
         boolean duplicateResult = false;
         given(memberService.validateIsDuplicate(any())).willReturn(duplicateResult);
@@ -154,10 +134,7 @@ class MemberControllerTest {
     @DisplayName("로그인 성공시 200 상태코드 반환")
     public void memberLoginSuccessTest() throws Exception {
         //given
-        MemberLoginRequestDTO memberLoginRequestDTO = MemberLoginRequestDTO.builder()
-                                                                           .userId("test")
-                                                                           .password("123456789")
-                                                                           .build();
+        MemberLoginRequestDTO memberLoginRequestDTO = getMemberLoginRequestDto();
         String body = (new ObjectMapper()).writeValueAsString(memberLoginRequestDTO);
         boolean loginResult = true;
         given(memberService.login(any())).willReturn(loginResult);
@@ -178,10 +155,7 @@ class MemberControllerTest {
     @DisplayName("로그인 실패시 401 상태코드 반환")
     public void memberLoginFailTest() throws Exception {
         //given
-        MemberLoginRequestDTO memberLoginRequestDTO = MemberLoginRequestDTO.builder()
-                                                                           .userId("test")
-                                                                           .password("123456789")
-                                                                           .build();
+        MemberLoginRequestDTO memberLoginRequestDTO = getMemberLoginRequestDto();
         String body = (new ObjectMapper()).writeValueAsString(memberLoginRequestDTO);
         given(memberService.login(any())).willThrow(new IllegalArgumentException());
 
@@ -195,6 +169,25 @@ class MemberControllerTest {
         //then
         resultActions
                 .andExpect(status().isUnauthorized());
+    }
+
+    private MemberRequestDTO getMemberRequestDTO(){
+        MemberRequestDTO memberRequestDTO = MemberRequestDTO.builder()
+                                                            .userId("junwooKim")
+                                                            .name("KIM")
+                                                            .nickName("junuuu")
+                                                            .password("123456789")
+                                                            .phoneNumber("01012345678")
+                                                            .build();
+        return memberRequestDTO;
+    }
+
+    private MemberLoginRequestDTO getMemberLoginRequestDto(){
+        MemberLoginRequestDTO memberLoginRequestDTO = MemberLoginRequestDTO.builder()
+                                                                           .userId("test")
+                                                                           .password("123456789")
+                                                                           .build();
+        return memberLoginRequestDTO;
     }
 
 }

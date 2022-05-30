@@ -33,20 +33,14 @@ class MemberServiceImplTest {
     @DisplayName("회원 가입 정상 로직")
     public void memberNotDuplicateTest() {
         //given
-        MemberRequestDTO memberRequestDTO = MemberRequestDTO.builder()
-                                                            .userId("Test")
-                                                            .name("Test")
-                                                            .nickName("Test")
-                                                            .password("Test")
-                                                            .phoneNumber("Test")
-                                                            .address(new Address("a1", "a2", "a3"))
-                                                            .build();
+        MemberRequestDTO memberRequestDTO = getMemberRequestDTO("Test");
         //when
         memberService.join(memberRequestDTO);
 
         //then
         assertThat("Test").isEqualTo(memberRepository.findByUserId("Test")
-                                                                          .get().getUserId());
+                                                     .get()
+                                                     .getUserId());
     }
 
 
@@ -55,23 +49,10 @@ class MemberServiceImplTest {
     public void memberDuplicateTest() {
 
         //given
-        MemberRequestDTO memberRequestDTO = MemberRequestDTO.builder()
-                                                            .userId("Test")
-                                                            .name("Test")
-                                                            .nickName("Test")
-                                                            .password("Test")
-                                                            .phoneNumber("Test")
-                                                            .address(new Address("a1", "a2", "a3"))
-                                                            .build();
+        MemberRequestDTO memberRequestDTO = getMemberRequestDTO("Test");
 
         memberService.join(memberRequestDTO);
-        MemberRequestDTO member1 = MemberRequestDTO.builder()
-                                                   .userId("Test")
-                                                   .name("Test")
-                                                   .nickName("Test")
-                                                   .password("Test")
-                                                   .phoneNumber("Test")
-                                                   .build();
+        MemberRequestDTO member1 = getMemberRequestDTO("Test");
 
         boolean result = memberService.validateIsDuplicate(member1);
         Assertions.assertEquals(result, true);
@@ -82,14 +63,7 @@ class MemberServiceImplTest {
     @DisplayName("회원 아이디 중복 검증")
     public void userIdDuplicateTest() {
         //given
-        Member member = Member.builder()
-                              .userId("Test")
-                              .name("Test")
-                              .nickName("Test")
-                              .password("Test")
-                              .phoneNumber("Test")
-                              .address(new Address("a1", "a2", "a3"))
-                              .build();
+        Member member = makeMember("Test");
         memberRepository.save(member);
 
         //when
@@ -103,14 +77,7 @@ class MemberServiceImplTest {
     @DisplayName("회원 닉네임 중복 검증")
     public void nickNameDuplicateTest() {
         //given
-        Member member = Member.builder()
-                              .userId("Test")
-                              .name("Test")
-                              .nickName("Test")
-                              .password("Test")
-                              .phoneNumber("Test")
-                              .address(new Address("a1", "a2", "a3"))
-                              .build();
+        Member member = makeMember("Test");
 
         memberRepository.save(member);
 
@@ -125,14 +92,7 @@ class MemberServiceImplTest {
     @DisplayName("회원 휴대전화 중복 검증")
     public void phoneNumberDuplicateTest() {
         //given
-        Member member = Member.builder()
-                              .userId("Test")
-                              .name("Test")
-                              .nickName("Test")
-                              .password("Test")
-                              .phoneNumber("01012345678")
-                              .address(new Address("a1", "a2", "a3"))
-                              .build();
+        Member member = makeMember("01012345678");
 
         memberRepository.save(member);
 
@@ -147,21 +107,11 @@ class MemberServiceImplTest {
     @DisplayName("회원 로그인 성공")
     public void memberLoginSuccessTest() {
         //given
-        MemberRequestDTO memberRequestDTO = MemberRequestDTO.builder()
-                                                            .userId("Test")
-                                                            .name("Test")
-                                                            .nickName("Test")
-                                                            .password("Test")
-                                                            .phoneNumber("Test")
-                                                            .address(new Address("a1", "a2", "a3"))
-                                                            .build();
+        MemberRequestDTO memberRequestDTO = getMemberRequestDTO("Test");
         memberService.join(memberRequestDTO);
 
         //when
-        MemberLoginRequestDTO memberLoginRequestDTO = MemberLoginRequestDTO.builder()
-                                                                           .userId("Test")
-                                                                           .password("Test")
-                                                                           .build();
+        MemberLoginRequestDTO memberLoginRequestDTO = makeMemberLoginRequestDTO("Test", "Test");
         boolean result = memberService.login(memberLoginRequestDTO);
 
         //then
@@ -172,22 +122,12 @@ class MemberServiceImplTest {
     @DisplayName("회원 로그인 실패")
     public void memberLoginFailTest() {
         //given
-        MemberRequestDTO memberRequestDTO = MemberRequestDTO.builder()
-                                                            .userId("Test")
-                                                            .name("Test")
-                                                            .nickName("Test")
-                                                            .password("Test")
-                                                            .phoneNumber("Test")
-                                                            .address(new Address("a1", "a2", "a3"))
-                                                            .build();
+        MemberRequestDTO memberRequestDTO = getMemberRequestDTO("Test");
 
         memberService.join(memberRequestDTO);
 
         //when
-        MemberLoginRequestDTO memberLoginRequestDTO = MemberLoginRequestDTO.builder()
-                                                                           .userId("Test")
-                                                                           .password("1234")
-                                                                           .build();
+        MemberLoginRequestDTO memberLoginRequestDTO = makeMemberLoginRequestDTO("Test", "1234");
 
         boolean result = memberService.login(memberLoginRequestDTO);
 
@@ -195,5 +135,36 @@ class MemberServiceImplTest {
         assertThat(result).isEqualTo(false);
     }
 
+    private MemberRequestDTO getMemberRequestDTO(String settingValue) {
+        MemberRequestDTO memberRequestDTO = MemberRequestDTO.builder()
+                                                            .userId(settingValue)
+                                                            .name(settingValue)
+                                                            .nickName(settingValue)
+                                                            .password(settingValue)
+                                                            .phoneNumber(settingValue)
+                                                            .address(new Address("a1", "a2", "a3"))
+                                                            .build();
+        return memberRequestDTO;
+    }
+
+    private Member makeMember(String settingValue) {
+        Member member = Member.builder()
+                              .userId(settingValue)
+                              .name(settingValue)
+                              .nickName(settingValue)
+                              .password(settingValue)
+                              .phoneNumber(settingValue)
+                              .address(new Address("a1", "a2", "a3"))
+                              .build();
+        return member;
+    }
+
+    private MemberLoginRequestDTO makeMemberLoginRequestDTO(String userId, String password) {
+        MemberLoginRequestDTO memberLoginRequestDTO = MemberLoginRequestDTO.builder()
+                                                                           .userId(userId)
+                                                                           .password(password)
+                                                                           .build();
+        return memberLoginRequestDTO;
+    }
 
 }

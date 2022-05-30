@@ -12,28 +12,32 @@ class MemberRequestDTOTest {
 
     @Test
     @DisplayName("회원 비밀번호 해싱화")
-    public void memberPasswordHashingTest(){
+    public void memberPasswordHashingTest() {
         //given
         String originPassword = "Test";
-        MemberRequestDTO memberRequestDTO = MemberRequestDTO.builder()
-                                                            .userId("Test")
-                                                            .name("Test")
-                                                            .nickName("Test")
-                                                            .password(originPassword)
-                                                            .phoneNumber("Test")
-                                                            .address(new Address("a1", "a2", "a3"))
-                                                            .build();
+        MemberRequestDTO memberRequestDTO = getMemberRequestDTO();
         //when
         memberRequestDTO.hashingPassword();
 
         //then
-        Assertions.assertThat(originPassword).isNotEqualTo(memberRequestDTO.getPassword());
+        Assertions.assertThat(originPassword)
+                  .isNotEqualTo(memberRequestDTO.getPassword());
     }
 
     @Test
     @DisplayName("DTO를 Entity로 변경하는 테스트")
-    public void memberRequestDtoToEntityTest(){
+    public void memberRequestDtoToEntityTest() {
         //given
+        MemberRequestDTO memberRequestDTO = getMemberRequestDTO();
+        //when
+        Member member = memberRequestDTO.toEntity();
+
+        //then
+        Assertions.assertThat(member)
+                  .isInstanceOf(Member.class);
+    }
+
+    private MemberRequestDTO getMemberRequestDTO() {
         MemberRequestDTO memberRequestDTO = MemberRequestDTO.builder()
                                                             .userId("Test")
                                                             .name("Test")
@@ -42,11 +46,7 @@ class MemberRequestDTOTest {
                                                             .phoneNumber("Test")
                                                             .address(new Address("a1", "a2", "a3"))
                                                             .build();
-        //when
-        Member member = memberRequestDTO.toEntity();
-
-        //then
-        Assertions.assertThat(member).isInstanceOf(Member.class);
+        return memberRequestDTO;
     }
 
 }

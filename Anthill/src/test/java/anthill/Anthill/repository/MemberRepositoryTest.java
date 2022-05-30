@@ -30,14 +30,7 @@ class MemberRepositoryTest {
     public void insertSuccessTest() {
 
         //given
-        Member member = Member.builder()
-                              .userId("Test")
-                              .name("Test")
-                              .nickName("Test")
-                              .password("Test")
-                              .phoneNumber("Test")
-                              .address(new Address("a1", "a2", "a3"))
-                              .build();
+        Member member = makeMember("test");
 
         //when
         memberRepository.save(member);
@@ -52,14 +45,7 @@ class MemberRepositoryTest {
     @Test
     public void deleteSuccessTest() {
         //given
-        Member member = Member.builder()
-                              .userId("Test")
-                              .name("Test")
-                              .nickName("Test")
-                              .password("Test")
-                              .phoneNumber("Test")
-                              .address(new Address("a1", "a2", "a3"))
-                              .build();
+        Member member = makeMember("test");
         memberRepository.save(member);
 
         //when
@@ -75,22 +61,8 @@ class MemberRepositoryTest {
     @Test
     public void selectSuccessTest() {
         //given
-        Member member = Member.builder()
-                              .userId("Test")
-                              .name("Test")
-                              .nickName("Test")
-                              .password("Test")
-                              .phoneNumber("Test")
-                              .address(new Address("a1", "a2", "a3"))
-                              .build();
-        Member fail = Member.builder()
-                            .userId("fail")
-                            .name("fail")
-                            .nickName("fail")
-                            .password("fail")
-                            .phoneNumber("fail")
-                            .address(new Address("a1", "a2", "a3"))
-                            .build();
+        Member member = makeMember("test");
+        Member fail = makeMember("fail");
         memberRepository.save(member);
 
         //when
@@ -106,22 +78,8 @@ class MemberRepositoryTest {
     @Test
     public void updateSuccessTest() {
         //given
-        Member member = Member.builder()
-                              .userId("Test")
-                              .name("Test")
-                              .nickName("Test")
-                              .password("Test")
-                              .phoneNumber("Test")
-                              .address(new Address("a1", "a2", "a3"))
-                              .build();
-        Member fail = Member.builder()
-                            .userId("fail")
-                            .name("fail")
-                            .nickName("fail")
-                            .password("fail")
-                            .phoneNumber("fail")
-                            .address(new Address("a1", "a2", "a3"))
-                            .build();
+        Member member = makeMember("test");
+        Member fail = makeMember("fail");
         memberRepository.save(member);
 
         //when
@@ -139,22 +97,15 @@ class MemberRepositoryTest {
     @DisplayName("회원 아이디로 조회")
     public void selectByUserId() {
         //given
-        Member member = Member.builder()
-                              .userId("Test")
-                              .name("Test")
-                              .nickName("Test")
-                              .password("Test")
-                              .phoneNumber("Test")
-                              .address(new Address("a1", "a2", "a3"))
-                              .build();
+        Member member = makeMember("test");
         memberRepository.save(member);
 
         //when
-        Member result = memberRepository.findByUserId("Test")
+        Member result = memberRepository.findByUserId("test")
                                         .get();
 
         //then
-        Assertions.assertThat("Test")
+        Assertions.assertThat("test")
                   .isEqualTo(result.getUserId());
     }
 
@@ -188,23 +139,9 @@ class MemberRepositoryTest {
     @DisplayName("Unique값이 겹칠 경우 DataIntegrityViolationException 발생")
     public void insertDuplicateTest() {
         //given
-        Member member1 = Member.builder()
-                               .userId("Test")
-                               .name("Test")
-                               .nickName("Test")
-                               .password("Test")
-                               .phoneNumber("Test")
-                               .address(new Address("a1", "a2", "a3"))
-                               .build();
+        Member member1 = makeMember("test");
         memberRepository.save(member1);
-        Member member2 = Member.builder()
-                               .userId("Test")
-                               .name("Test")
-                               .nickName("Test")
-                               .password("Test")
-                               .phoneNumber("Test")
-                               .address(new Address("a1", "a2", "a3"))
-                               .build();
+        Member member2 = makeMember("test");
 
         //then
         assertThrows(DataIntegrityViolationException.class, () -> {
@@ -235,25 +172,30 @@ class MemberRepositoryTest {
     @Test
     public void EntityContextTest() {
         //given
-        Member member1 = Member.builder()
-                               .userId("Test")
-                               .name("Test")
-                               .nickName("Test")
-                               .password("Test")
-                               .phoneNumber("Test")
-                               .address(new Address("a1", "a2", "a3"))
-                               .build();
+        Member member1 = makeMember("test");
         memberRepository.save(member1);
         entityManager.clear();
 
         //when
-        Member member2 = memberRepository.findByUserId("Test")
+        Member member2 = memberRepository.findByUserId("test")
                                          .get();
 
         //then
         Assertions.assertThat(member1)
                   .isNotEqualTo(member2);
 
+    }
+
+    private Member makeMember(String settingValue){
+        Member member = Member.builder()
+                              .userId(settingValue)
+                              .name(settingValue)
+                              .nickName(settingValue)
+                              .password(settingValue)
+                              .phoneNumber(settingValue)
+                              .address(new Address("a1", "a2", "a3"))
+                              .build();
+        return member;
     }
 
 }
