@@ -6,8 +6,6 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder
 @Getter
 @Table(name = "member")
 @Entity
@@ -36,6 +34,17 @@ public class Member {
 
     @Embedded
     private Address address;
+
+    @Builder
+    public Member(Long id, String userId, String password, String nickName, String name, String phoneNumber, Address address) {
+        this.id = id;
+        this.userId = userId;
+        this.password = password;
+        this.nickName = nickName;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+    }
 
     public void changeNickName(String nickName){
         this.nickName = nickName;

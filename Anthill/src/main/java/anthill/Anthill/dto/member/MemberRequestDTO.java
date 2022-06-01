@@ -10,7 +10,6 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
 @Getter
 public class MemberRequestDTO {
     //@NotNull : Null만 허용하지 않음 "", " "허용
