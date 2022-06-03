@@ -7,7 +7,16 @@ import javax.persistence.*;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Table(name = "member")
+@Table(
+        name = "member"
+        , indexes = {
+        @Index(name = "unique_idx_user_id", columnList = "user_id", unique = true),
+        @Index(name = "unique_idx_nickname", columnList = "nickname", unique = true),
+        @Index(name = "unique_idx_phone_number", columnList = "phone_number", unique = true)
+}
+)
+
+
 @Entity
 @DynamicUpdate
 public class Member {
@@ -17,19 +26,19 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    @Column(name = "user_id", nullable = false, unique = true, length = 20)
+    @Column(name = "user_id", nullable = false, length = 20)
     private String userId;
 
     @Column(name = "password", nullable = false, length = 255)
     private String password;
 
-    @Column(name = "nickname", nullable = false, unique = true, length = 20)
+    @Column(name = "nickname", nullable = false, length = 20)
     private String nickName;
 
     @Column(name = "name", nullable = false, length = 40)
     private String name;
 
-    @Column(name = "phone_number", nullable = false, unique = true, length = 40)
+    @Column(name = "phone_number", nullable = false, length = 40)
     private String phoneNumber;
 
     @Embedded
@@ -46,7 +55,7 @@ public class Member {
         this.address = address;
     }
 
-    public void changeNickName(String nickName){
+    public void changeNickName(String nickName) {
         this.nickName = nickName;
     }
 
