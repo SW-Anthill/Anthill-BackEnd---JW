@@ -48,11 +48,18 @@ public class MemberRequestDTO {
         this.address = address;
     }
 
-    public void hashingPassword(){
+    public void hashingPassword() {
         this.password = BCrypt.hashpw(this.password, BCrypt.gensalt());
     }
 
     public Member toEntity() {
-        return Member.builder().userId(userId).password(password).nickName(nickName).name(name).phoneNumber(phoneNumber).address(address).build();
+        return Member.builder()
+                     .userId(this.userId)
+                     .password(this.password)
+                     .nickName(this.nickName)
+                     .name(this.name)
+                     .phoneNumber(this.phoneNumber)
+                     .address(this.address)
+                     .build();
     }
 }
