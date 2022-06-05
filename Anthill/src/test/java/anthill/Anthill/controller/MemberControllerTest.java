@@ -2,6 +2,7 @@ package anthill.Anthill.controller;
 
 import anthill.Anthill.dto.member.MemberLoginRequestDTO;
 import anthill.Anthill.dto.member.MemberRequestDTO;
+import anthill.Anthill.dto.member.MemberResponseDTO;
 import anthill.Anthill.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -157,7 +158,7 @@ class MemberControllerTest {
         //given
         MemberLoginRequestDTO memberLoginRequestDTO = getMemberLoginRequestDto();
         String body = (new ObjectMapper()).writeValueAsString(memberLoginRequestDTO);
-        given(memberService.login(any())).willThrow(new IllegalArgumentException());
+        given(memberService.login(any())).willThrow(new IllegalStateException());
 
         //when
         ResultActions resultActions = mvc.perform(post("/members/login")
@@ -171,7 +172,41 @@ class MemberControllerTest {
                 .andExpect(status().isUnauthorized());
     }
 
-    private MemberRequestDTO getMemberRequestDTO(){
+    @Test
+    public void 회원조회성공시200_OK() throws Exception {
+        //given
+        MemberResponseDTO memberResponseDTO = getMemberResponseDTO();
+        given(memberService.findByUserID(any())).willReturn(memberResponseDTO);
+        //when
+        ResultActions resultActions = mvc.perform(get("/members/" + "test"));
+        //then
+        resultActions.andExpect(status().isOk());
+
+    }
+
+    @Test
+    public void 회원조회실패시404_NOT_FOUND() throws Exception {
+        //given
+        MemberResponseDTO memberResponseDTO = getMemberResponseDTO();
+        given(memberService.findByUserID(any())).willThrow(new IllegalArgumentException());
+        //when
+        ResultActions resultActions = mvc.perform(get("/members/" + "test"));
+        //then
+        resultActions.andExpect(status().isNotFound());
+
+    }
+
+    private MemberResponseDTO getMemberResponseDTO() {
+        MemberResponseDTO memberResponseDTO = MemberResponseDTO.builder()
+                                                               .userId("test")
+                                                               .name("test")
+                                                               .nickName("test")
+                                                               .build();
+        return memberResponseDTO;
+    }
+
+
+    private MemberRequestDTO getMemberRequestDTO() {
         MemberRequestDTO memberRequestDTO = MemberRequestDTO.builder()
                                                             .userId("junwooKim")
                                                             .name("KIM")
@@ -182,7 +217,7 @@ class MemberControllerTest {
         return memberRequestDTO;
     }
 
-    private MemberLoginRequestDTO getMemberLoginRequestDto(){
+    private MemberLoginRequestDTO getMemberLoginRequestDto() {
         MemberLoginRequestDTO memberLoginRequestDTO = MemberLoginRequestDTO.builder()
                                                                            .userId("test")
                                                                            .password("123456789")
