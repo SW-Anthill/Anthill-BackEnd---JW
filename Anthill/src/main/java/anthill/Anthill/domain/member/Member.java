@@ -1,5 +1,6 @@
 package anthill.Anthill.domain.member;
 
+import anthill.Anthill.dto.member.MemberResponseDTO;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -57,6 +58,16 @@ public class Member {
 
     public void changeNickName(String nickName) {
         this.nickName = nickName;
+    }
+
+    public MemberResponseDTO toMemberResponseDTO() {
+        return MemberResponseDTO.builder()
+                                .userId(this.getUserId())
+                                .nickName(this.getNickName())
+                                .name(this.getName())
+                                .phoneNumber(this.getPhoneNumber())
+                                .address(this.getAddress())
+                                .build();
     }
 
 }
