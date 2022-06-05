@@ -1,8 +1,9 @@
 package anthill.Anthill.service;
 
-import anthill.Anthill.domain.member.Member;
 import anthill.Anthill.dto.member.MemberLoginRequestDTO;
 import anthill.Anthill.dto.member.MemberRequestDTO;
+import anthill.Anthill.dto.member.MemberResponseDTO;
+
 
 public interface MemberService {
     void join(MemberRequestDTO memberRequestDTO);
@@ -16,4 +17,6 @@ public interface MemberService {
     boolean checkPhoneNumberDuplicate(String phoneNumber);
 
     boolean login(MemberLoginRequestDTO memberLoginRequestDTO);
+
+    MemberResponseDTO findByUserID(String userId);
 }

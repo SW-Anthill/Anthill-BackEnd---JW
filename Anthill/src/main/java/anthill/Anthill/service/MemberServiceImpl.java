@@ -3,6 +3,7 @@ package anthill.Anthill.service;
 import anthill.Anthill.domain.member.Member;
 import anthill.Anthill.dto.member.MemberLoginRequestDTO;
 import anthill.Anthill.dto.member.MemberRequestDTO;
+import anthill.Anthill.dto.member.MemberResponseDTO;
 import anthill.Anthill.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
@@ -51,14 +52,22 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.existsByPhoneNumber(phoneNumber);
     }
 
+
     @Override
     public boolean login(MemberLoginRequestDTO memberLoginRequestDTO) {
         Optional<Member> user = memberRepository.findByUserId(memberLoginRequestDTO.getUserId());
-
-        String userPassword = user.orElseThrow(() -> new IllegalArgumentException())
+        String userPassword = user.orElseThrow(() -> new IllegalStateException())
                                   .getPassword();
 
         return BCrypt.checkpw(memberLoginRequestDTO.getPassword(), userPassword);
+    }
+
+    @Override
+    public MemberResponseDTO findByUserID(String userId) {
+        return memberRepository.findByUserId(userId)
+                               .orElseThrow(() -> new IllegalArgumentException())
+                               .toMemberResponseDTO();
+
     }
 
 }
