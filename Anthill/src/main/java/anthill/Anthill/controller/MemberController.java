@@ -1,5 +1,6 @@
 package anthill.Anthill.controller;
 
+import anthill.Anthill.domain.member.Member;
 import anthill.Anthill.dto.member.MemberLoginRequestDTO;
 import anthill.Anthill.dto.member.MemberRequestDTO;
 import anthill.Anthill.dto.member.MemberResponseDTO;
@@ -22,6 +23,13 @@ public class MemberController {
     @GetMapping
     public String helloMessage() {
         return "ok";
+    }
+
+    @GetMapping("/{userid}")
+    public ResponseEntity<MemberResponseDTO> findByUserID(@PathVariable(value = "userid") final String userId) {
+        MemberResponseDTO memberResponseDTO = memberService.findByUserID(userId);
+        return ResponseEntity.status(HttpStatus.OK)
+                             .body(memberResponseDTO);
     }
 
     @PostMapping
@@ -47,5 +55,6 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                              .body("로그인 실패");
     }
+
 
 }
