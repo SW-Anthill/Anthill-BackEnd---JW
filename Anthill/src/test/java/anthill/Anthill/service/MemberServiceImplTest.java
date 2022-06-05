@@ -13,7 +13,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @DataJpaTest
@@ -133,6 +137,30 @@ class MemberServiceImplTest {
 
         //then
         assertThat(result).isEqualTo(false);
+    }
+
+    @Test
+    public void 회원조회성공() {
+        //given
+        Member member = makeMember("test");
+        memberRepository.save(member);
+
+        //when
+        Member findMember = memberRepository.findByUserId("test")
+                                            .orElseThrow(IllegalArgumentException::new);
+        //then
+        assertThat(member.getUserId()).isEqualTo(findMember.getUserId());
+    }
+
+    @Test
+    public void 회원조회실패() {
+
+        //then
+        assertThrows(IllegalArgumentException.class, () -> {
+            //when
+            memberRepository.findByUserId("test")
+                            .orElseThrow(IllegalArgumentException::new);
+        });
     }
 
     private MemberRequestDTO getMemberRequestDTO(String settingValue) {
