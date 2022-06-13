@@ -1,5 +1,6 @@
 package anthill.Anthill.controller;
 
+import anthill.Anthill.dto.member.MemberDuplicateResponseDTO;
 import anthill.Anthill.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,17 +15,25 @@ public class DuplicateController {
     private final MemberService memberService;
 
     @GetMapping("/user-nickname/{nickname}")
-    public ResponseEntity<Boolean> checkNicknameDuplicate(@PathVariable String nickname) {
-        return ResponseEntity.ok(memberService.checkNicknameDuplicate(nickname));
+    public ResponseEntity<MemberDuplicateResponseDTO> checkNicknameDuplicate(@PathVariable String nickname) {
+        return ResponseEntity.ok(MemberDuplicateResponseDTO.builder()
+                                                           .message(String.valueOf(memberService.checkNicknameDuplicate(nickname)))
+                                                           .build());
     }
 
     @GetMapping("/user-id/{userid}")
-    public ResponseEntity<Boolean> checkUserIdDuplicate(@PathVariable String userid) {
-        return ResponseEntity.ok(memberService.checkUserIdDuplicate(userid));
+    public ResponseEntity<MemberDuplicateResponseDTO> checkUserIdDuplicate(@PathVariable String userid) {
+        return ResponseEntity.ok(MemberDuplicateResponseDTO.builder()
+                                                           .message(String.valueOf(memberService.checkUserIdDuplicate(userid)))
+                                                           .build());
+
     }
 
     @GetMapping("/user-phonenumber/{phonenumber}")
-    public ResponseEntity<Boolean> checkPhoneNumberDuplicate(@PathVariable String phonenumber) {
-        return ResponseEntity.ok(memberService.checkPhoneNumberDuplicate(phonenumber));
+    public ResponseEntity<MemberDuplicateResponseDTO> checkPhoneNumberDuplicate(@PathVariable String phonenumber) {
+        return ResponseEntity.ok(MemberDuplicateResponseDTO.builder()
+                                                           .message(String.valueOf(memberService.checkUserIdDuplicate(phonenumber)))
+                                                           .build());
+
     }
 }

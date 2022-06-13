@@ -1,0 +1,16 @@
+= REST Docs 문서 만들기
+부제목(부제)
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs // 문서에 표기되는 코드들의 하이라이팅을 highlightjs를 사용
+:toc: left // toc (Table Of Contents)를 문서의 좌측에 두기
+:toclevels: 2
+:sectlinks:
+
+[[Member-API]]
+== Member API
+
+[[Member-중복-조회]]
+=== Member 중복 조회
+operation::nick-name-duplicate[snippets='http-request,path-parameters,http-response,response-fields']
+operation::nick-name-non-duplicate[snippets='http-request,path-parameters,http-response,response-fields']
