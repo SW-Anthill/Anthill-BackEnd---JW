@@ -115,3 +115,4 @@ Anthill/out/test/classes/anthill/Anthill/dto/member/MemberRequestDTOTest.class
 Anthill/out/test/classes/anthill/Anthill/repository/MemberRepositoryTest.class
 Anthill/out/test/classes/anthill/Anthill/service/MemberServiceImplTest.class
 Anthill/src/main/resources/static/docs/index.html
+Anthill/src/main/resources/application.properties
