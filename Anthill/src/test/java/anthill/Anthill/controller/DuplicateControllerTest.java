@@ -8,12 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -21,10 +18,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -43,7 +36,7 @@ class DuplicateControllerTest {
     public void checkNicknameDuplicateFalseTest() throws Exception {
         //given
         boolean test = false;
-        String nickName = "test";
+        String nickName = "testNickName";
         given(memberService.checkNicknameDuplicate(nickName)).willReturn(test);
 
 
@@ -72,7 +65,7 @@ class DuplicateControllerTest {
     public void checkNicknameDuplicateTrueTest() throws Exception {
         //given
         boolean test = true;
-        String nickName = "test";
+        String nickName = "testNickName";
         given(memberService.checkNicknameDuplicate(nickName)).willReturn(test);
 
         //when
@@ -97,6 +90,118 @@ class DuplicateControllerTest {
         return MemberDuplicateResponseDTO.builder()
                                          .message(String.valueOf(result))
                                          .build();
+    }
+
+    @Test
+    public void 유저아이디중복테스트false반환() throws Exception {
+        //given
+        boolean test = false;
+        String userId = "testUserId";
+        given(memberService.checkUserIdDuplicate(userId)).willReturn(test);
+
+
+        //when
+        ResultActions resultActions = mvc.perform(RestDocumentationRequestBuilders.get("/user-id/{userId}", userId));
+
+
+        //then
+        resultActions
+                .andExpect(status().isOk())
+                .andDo(document("user-id-non-duplicate",
+                        pathParameters(
+                                parameterWithName("userId").description("멤버 아이디")
+                        ),
+
+                        responseFields(
+                                fieldWithPath("message").description("성공 실패 여부")
+                        )
+
+                ));
+
+    }
+
+    @Test
+    public void 유저아이디중복테스트true반환() throws Exception {
+        //given
+        boolean test = true;
+        String userId = "testUserId";
+        given(memberService.checkUserIdDuplicate(userId)).willReturn(test);
+
+
+        //when
+        ResultActions resultActions = mvc.perform(RestDocumentationRequestBuilders.get("/user-id/{userId}", userId));
+
+
+        //then
+        resultActions
+                .andExpect(status().isOk())
+                .andDo(document("user-id-duplicate",
+                        pathParameters(
+                                parameterWithName("userId").description("멤버 아이디")
+                        ),
+
+                        responseFields(
+                                fieldWithPath("message").description("성공 실패 여부")
+                        )
+
+                ));
+
+    }
+
+    @Test
+    public void 유저전화번호중복테스트false반환() throws Exception {
+        //given
+        boolean test = false;
+        String phoneNumber = "01012345678";
+        given(memberService.checkPhoneNumberDuplicate(phoneNumber)).willReturn(test);
+
+
+        //when
+        ResultActions resultActions = mvc.perform(RestDocumentationRequestBuilders.get("/user-phonenumber/{phonenumber}", phoneNumber));
+
+
+        //then
+        resultActions
+                .andExpect(status().isOk())
+                .andDo(document("user-phonenumber-non-duplicate",
+                        pathParameters(
+                                parameterWithName("phonenumber").description("멤버 전화번호")
+                        ),
+
+                        responseFields(
+                                fieldWithPath("message").description("성공 실패 여부")
+                        )
+
+                ));
+
+    }
+
+    @Test
+    public void 유저전화번호중복테스트true반환() throws Exception {
+        //given
+        boolean test = true;
+        String phoneNumber = "01012345678";
+        given(memberService.checkPhoneNumberDuplicate(phoneNumber)).willReturn(test);
+
+
+        //when
+        ResultActions resultActions = mvc.perform(RestDocumentationRequestBuilders.get("/user-phonenumber/{phonenumber}", phoneNumber));
+
+
+        //then
+        resultActions
+                .andExpect(status().isOk())
+                .andDo(document("user-phonenumber-duplicate",
+                        pathParameters(
+                                parameterWithName("phonenumber").description("멤버 전화번호")
+                        ),
+
+                        responseFields(
+                                fieldWithPath("message").description("성공 실패 여부")
+                        )
+
+                ));
+
     }
 
 }
