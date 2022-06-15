@@ -32,7 +32,7 @@ public class DuplicateController {
     @GetMapping("/user-phonenumber/{phonenumber}")
     public ResponseEntity<MemberDuplicateResponseDTO> checkPhoneNumberDuplicate(@PathVariable String phonenumber) {
         return ResponseEntity.ok(MemberDuplicateResponseDTO.builder()
-                                                           .message(String.valueOf(memberService.checkUserIdDuplicate(phonenumber)))
+                                                           .message(String.valueOf(memberService.checkPhoneNumberDuplicate(phonenumber)))
                                                            .build());
 
     }
