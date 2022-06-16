@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -18,13 +19,18 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-
+@AutoConfigureRestDocs
 @WebMvcTest(MemberController.class)
 class MemberControllerTest {
 
@@ -128,7 +134,18 @@ class MemberControllerTest {
 
         //then
         resultActions
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andDo(document("member-join-success",
+                        preprocessRequest(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("userId").description("아이디"),
+                                fieldWithPath("name").description("이름"),
+                                fieldWithPath("nickName").description("닉네임"),
+                                fieldWithPath("password").description("비밀번호"),
+                                fieldWithPath("phoneNumber").description("전화 번호"),
+                                fieldWithPath("address").description("주소")
+                        )
+                ));
     }
 
     @Test
@@ -213,6 +230,7 @@ class MemberControllerTest {
                                                             .nickName("junuuu")
                                                             .password("123456789")
                                                             .phoneNumber("01012345678")
+                                                            .address(null)
                                                             .build();
         return memberRequestDTO;
     }
