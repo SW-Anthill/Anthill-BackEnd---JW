@@ -25,6 +25,7 @@ class MemberRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
 
+
     @DisplayName("CREATE 테스트")
     @Test
     public void insertSuccessTest() {
@@ -110,7 +111,7 @@ class MemberRepositoryTest {
     }
 
     @Test
-    @DisplayName("아무것도 없을때 조회시엔 NoSuchElementException 발생")
+    @DisplayName("아무것도 없을때 값을 꺼내면 NoSuchElementException 발생")
     public void selectByUserIdNone() {
         //given
 
