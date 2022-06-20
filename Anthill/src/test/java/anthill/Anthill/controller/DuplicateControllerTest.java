@@ -53,7 +53,7 @@ class DuplicateControllerTest {
                         ),
 
                         responseFields(
-                                fieldWithPath("message").description("성공 실패 여부")
+                                fieldWithPath("message").description("중복 시 true 중복 되지 않을 시 false")
                         )
 
                 ));
@@ -80,7 +80,7 @@ class DuplicateControllerTest {
                         ),
 
                         responseFields(
-                                fieldWithPath("message").description("성공 실패 여부")
+                                fieldWithPath("message").description("중복 시 true 중복 되지 않을 시 false")
                         )
                 ));
 
@@ -113,7 +113,7 @@ class DuplicateControllerTest {
                         ),
 
                         responseFields(
-                                fieldWithPath("message").description("성공 실패 여부")
+                                fieldWithPath("message").description("중복 시 true 중복 되지 않을 시 false")
                         )
 
                 ));
@@ -141,7 +141,7 @@ class DuplicateControllerTest {
                         ),
 
                         responseFields(
-                                fieldWithPath("message").description("성공 실패 여부")
+                                fieldWithPath("message").description("중복 시 true 중복 되지 않을 시 false")
                         )
 
                 ));
@@ -169,7 +169,7 @@ class DuplicateControllerTest {
                         ),
 
                         responseFields(
-                                fieldWithPath("message").description("성공 실패 여부")
+                                fieldWithPath("message").description("중복 시 true 중복 되지 않을 시 false")
                         )
 
                 ));
@@ -197,7 +197,7 @@ class DuplicateControllerTest {
                         ),
 
                         responseFields(
-                                fieldWithPath("message").description("성공 실패 여부")
+                                fieldWithPath("message").description("중복 시 true 중복 되지 않을 시 false")
                         )
 
                 ));
