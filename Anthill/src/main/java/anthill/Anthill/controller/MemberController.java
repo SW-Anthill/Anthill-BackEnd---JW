@@ -1,6 +1,5 @@
 package anthill.Anthill.controller;
 
-import anthill.Anthill.domain.member.Member;
 import anthill.Anthill.dto.member.MemberLoginRequestDTO;
 import anthill.Anthill.dto.member.MemberRequestDTO;
 import anthill.Anthill.dto.member.MemberResponseDTO;
