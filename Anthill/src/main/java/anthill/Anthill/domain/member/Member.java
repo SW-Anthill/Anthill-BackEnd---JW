@@ -1,10 +1,14 @@
 package anthill.Anthill.domain.member;
 
+import anthill.Anthill.domain.board.Board;
 import anthill.Anthill.dto.member.MemberResponseDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -44,6 +48,10 @@ public class Member {
 
     @Embedded
     private Address address;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    private List<Board> boards = new ArrayList<>();
 
     @Builder
     public Member(Long id, String userId, String password, String nickName, String name, String phoneNumber, Address address) {
