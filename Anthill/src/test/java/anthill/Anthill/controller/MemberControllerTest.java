@@ -4,6 +4,7 @@ import anthill.Anthill.domain.member.Address;
 import anthill.Anthill.dto.member.MemberLoginRequestDTO;
 import anthill.Anthill.dto.member.MemberRequestDTO;
 import anthill.Anthill.dto.member.MemberResponseDTO;
+import anthill.Anthill.service.JwtService;
 import anthill.Anthill.service.MemberService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,10 +31,10 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureRestDocs
 @WebMvcTest(MemberController.class)
@@ -44,6 +45,9 @@ class MemberControllerTest {
 
     @MockBean
     private MemberService memberService;
+
+    @MockBean
+    private JwtService jwtService;
 
     @Test
     @DisplayName("헬로우 테스트")
@@ -164,8 +168,10 @@ class MemberControllerTest {
         //given
         MemberLoginRequestDTO memberLoginRequestDTO = getMemberLoginRequestDto();
         String body = (new ObjectMapper()).writeValueAsString(memberLoginRequestDTO);
+        String token = "header.payload.verifySignature";
         boolean loginResult = true;
         given(memberService.login(any())).willReturn(loginResult);
+        given(jwtService.create(any(), any(), any())).willReturn(token);
 
         //when
         ResultActions resultActions = mvc.perform(post("/members/login")
@@ -177,11 +183,15 @@ class MemberControllerTest {
         //then
         resultActions
                 .andExpect(status().isOk())
+                .andExpect(header().string("access-token", token))
                 .andDo(document("member-login-success",
                         preprocessRequest(prettyPrint()),
                         requestFields(
                                 fieldWithPath("userId").description("아이디"),
                                 fieldWithPath("password").description("비밀번호")
+                        ),
+                        responseHeaders(
+                                headerWithName("access-token").description("로그인 시 발급된 토큰")
                         )
                 ));
     }
