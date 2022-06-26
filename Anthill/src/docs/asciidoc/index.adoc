@@ -28,4 +28,4 @@ operation::member-join-success[snippets='http-request,request-fields,http-respon
 operation::member-get-by-id-success[snippets='http-request,path-parameters,http-response,response-fields']
 
 == Member 회원 로그인
-operation::member-login-success[snippets='http-request,http-response']
+operation::member-login-success[snippets='http-request,http-response,response-headers']
