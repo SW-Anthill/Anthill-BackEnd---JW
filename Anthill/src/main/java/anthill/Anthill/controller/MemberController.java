@@ -3,6 +3,7 @@ package anthill.Anthill.controller;
 import anthill.Anthill.dto.member.MemberLoginRequestDTO;
 import anthill.Anthill.dto.member.MemberRequestDTO;
 import anthill.Anthill.dto.member.MemberResponseDTO;
+import anthill.Anthill.service.JwtService;
 import anthill.Anthill.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,8 @@ import javax.validation.Valid;
 public class MemberController {
 
     private final MemberService memberService;
+
+    private final JwtService jwtService;
 
     @GetMapping
     public String helloMessage() {
@@ -48,7 +51,9 @@ public class MemberController {
     public ResponseEntity<String> loginMember(@RequestBody MemberLoginRequestDTO memberLoginRequestDTO) {
 
         if (memberService.login(memberLoginRequestDTO)) {
+            String token = jwtService.create("userId", memberLoginRequestDTO.getUserId(), "access-token");
             return ResponseEntity.status(HttpStatus.OK)
+                                 .header("access-token", token)
                                  .body("로그인 완료");
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
