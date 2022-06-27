@@ -1,5 +1,6 @@
 package anthill.Anthill.controller;
 
+import anthill.Anthill.dto.common.BasicResponseDTO;
 import anthill.Anthill.dto.member.MemberLoginRequestDTO;
 import anthill.Anthill.dto.member.MemberRequestDTO;
 import anthill.Anthill.dto.member.MemberResponseDTO;
@@ -22,42 +23,53 @@ public class MemberController {
 
     private final JwtService jwtService;
 
+    private final String FAIL = "failure";
+    private final String SUCCESS = "success";
+
     @GetMapping
     public String helloMessage() {
         return "ok";
     }
 
     @GetMapping("/{userid}")
-    public ResponseEntity<MemberResponseDTO> findByUserID(@PathVariable(value = "userid") final String userId) {
+    public ResponseEntity<BasicResponseDTO> findByUserID(@PathVariable(value = "userid") final String userId) {
         MemberResponseDTO memberResponseDTO = memberService.findByUserID(userId);
         return ResponseEntity.status(HttpStatus.OK)
-                             .body(memberResponseDTO);
+                             .body(makeBasicResponseDTO(SUCCESS, memberResponseDTO));
     }
 
     @PostMapping
-    public ResponseEntity<String> registerMember(@Valid @RequestBody MemberRequestDTO memberRequestDTO) {
+    public ResponseEntity<BasicResponseDTO> registerMember(@Valid @RequestBody MemberRequestDTO memberRequestDTO) {
 
         if (memberService.validateIsDuplicate(memberRequestDTO)) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
-                                 .body("회원 데이터 중복 발생");
+                                 .body(makeBasicResponseDTO(FAIL, null));
         }
 
         memberService.join(memberRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED)
-                             .body("회원가입 완료");
+                             .body(makeBasicResponseDTO(SUCCESS, null));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginMember(@RequestBody MemberLoginRequestDTO memberLoginRequestDTO) {
+    public ResponseEntity<BasicResponseDTO> loginMember(@RequestBody MemberLoginRequestDTO memberLoginRequestDTO) {
 
         if (memberService.login(memberLoginRequestDTO)) {
             String token = jwtService.create("userId", memberLoginRequestDTO.getUserId(), "access-token");
             return ResponseEntity.status(HttpStatus.OK)
                                  .header("access-token", token)
-                                 .body("로그인 완료");
+                                 .body(makeBasicResponseDTO(SUCCESS, null));
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                             .body("로그인 실패");
+                             .body(makeBasicResponseDTO(FAIL, null));
+
+    }
+
+    private <T> BasicResponseDTO makeBasicResponseDTO(String message, T responseData) {
+        return BasicResponseDTO.builder()
+                               .message(message)
+                               .responseData(responseData)
+                               .build();
     }
 
 
