@@ -49,24 +49,9 @@ class MemberControllerTest {
     @MockBean
     private JwtService jwtService;
 
-    @Test
-    @DisplayName("헬로우 테스트")
-    public void returnOkMessage() throws Exception {
-        //given
-        String ok = "ok";
-
-        //when
-        ResultActions resultActions = mvc.perform(get("/members"));
-
-        //then
-        resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().string(ok));
-    }
 
     @Test
-    @DisplayName("회원가입 입력값들이 유효하지 않음")
-    public void memberPostDataInValidateTest() throws Exception {
+    public void 회원가입_입력값_유효하지않음_테스트() throws Exception {
         //given
         MemberRequestDTO memberRequestDTO = MemberRequestDTO.builder()
                                                             .build();
@@ -85,8 +70,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("회원가입 입력값들이 유효함")
-    public void memberPostDataValidateTest() throws Exception {
+    public void 회원가입_입력값_유효_테스트() throws Exception {
         //given
         MemberRequestDTO memberRequestDTO = getMemberRequestDTO();
         String body = (new ObjectMapper()).writeValueAsString(memberRequestDTO);
@@ -104,8 +88,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("회원 중복 발생시 409 상태코드 반환")
-    public void memberDuplicateTest() throws Exception {
+    public void 회원_중복발생_테스트() throws Exception {
         //given
         MemberRequestDTO memberRequestDTO = getMemberRequestDTO();
         String body = (new ObjectMapper()).writeValueAsString(memberRequestDTO);
@@ -126,8 +109,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("회원 중복 발생안됬을 시 201 상태코드 반환")
-    public void memberNonDuplicateTest() throws Exception {
+    public void 회원_중복되지않음_테스트() throws Exception {
         //given
         MemberRequestDTO memberRequestDTO = getMemberRequestDTO();
         String body = (new ObjectMapper()).writeValueAsString(memberRequestDTO);
@@ -146,6 +128,7 @@ class MemberControllerTest {
                 .andExpect(status().isCreated())
                 .andDo(document("member-join-success",
                         preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("userId").description("아이디"),
                                 fieldWithPath("name").description("이름"),
@@ -158,13 +141,17 @@ class MemberControllerTest {
                                                                  .optional(),
                                 fieldWithPath("address.zipCode").description("우편 번호")
                                                                 .optional()
+                        ),
+                        responseFields(
+                                fieldWithPath("message").description("메시지"),
+                                fieldWithPath("responseData").description("반환값"),
+                                fieldWithPath("errorMessage").description("에러 메시지")
                         )
                 ));
     }
 
     @Test
-    @DisplayName("로그인 성공시 200 상태코드 반환")
-    public void memberLoginSuccessTest() throws Exception {
+    public void 로그인_성공_테스트() throws Exception {
         //given
         MemberLoginRequestDTO memberLoginRequestDTO = getMemberLoginRequestDto();
         String body = (new ObjectMapper()).writeValueAsString(memberLoginRequestDTO);
@@ -186,19 +173,24 @@ class MemberControllerTest {
                 .andExpect(header().string("access-token", token))
                 .andDo(document("member-login-success",
                         preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("userId").description("아이디"),
                                 fieldWithPath("password").description("비밀번호")
                         ),
                         responseHeaders(
                                 headerWithName("access-token").description("로그인 시 발급된 토큰")
+                        ),
+                        responseFields(
+                                fieldWithPath("message").description("메시지"),
+                                fieldWithPath("responseData").description("반환값"),
+                                fieldWithPath("errorMessage").description("에러 메시지")
                         )
                 ));
     }
 
     @Test
-    @DisplayName("로그인 실패시 401 상태코드 반환")
-    public void memberLoginFailTest() throws Exception {
+    public void 로그인_실패_테스트() throws Exception {
         //given
         MemberLoginRequestDTO memberLoginRequestDTO = getMemberLoginRequestDto();
         String body = (new ObjectMapper()).writeValueAsString(memberLoginRequestDTO);
@@ -217,7 +209,7 @@ class MemberControllerTest {
     }
 
     @Test
-    public void 회원조회성공시200_OK() throws Exception {
+    public void 회원조회_성공_테스트() throws Exception {
         //given
         MemberResponseDTO memberResponseDTO = getMemberResponseDTO();
         given(memberService.findByUserID(any())).willReturn(memberResponseDTO);
@@ -231,23 +223,27 @@ class MemberControllerTest {
                                      parameterWithName("userid").description("아이디")
                              ),
                              responseFields(
-                                     fieldWithPath("userId").description("아이디"),
-                                     fieldWithPath("name").description("이름"),
-                                     fieldWithPath("nickName").description("닉네임"),
-                                     fieldWithPath("phoneNumber").description("전화 번호"),
-                                     fieldWithPath("address.address1").description("주소")
-                                                                      .optional(),
-                                     fieldWithPath("address.address2").description("상세 주소")
-                                                                      .optional(),
-                                     fieldWithPath("address.zipCode").description("우편 번호")
-                                                                     .optional()
+                                     fieldWithPath("message").description("메시지"),
+                                     fieldWithPath("responseData").description("반환값"),
+                                     fieldWithPath("responseData.userId").description("아이디"),
+                                     fieldWithPath("responseData.name").description("이름"),
+                                     fieldWithPath("responseData.nickName").description("닉네임"),
+                                     fieldWithPath("responseData.phoneNumber").description("전화 번호"),
+                                     fieldWithPath("responseData.address.address1").description("주소")
+                                                                                   .optional(),
+                                     fieldWithPath("responseData.address.address2").description("상세 주소")
+                                                                                   .optional(),
+                                     fieldWithPath("responseData.address.zipCode").description("우편 번호")
+                                                                                  .optional(),
+                                     fieldWithPath("errorMessage").description("에러 메시지")
+
                              )
                      ));
 
     }
 
     @Test
-    public void 회원조회실패시404_NOT_FOUND() throws Exception {
+    public void 회원조회_실패_테스트() throws Exception {
         //given
         MemberResponseDTO memberResponseDTO = getMemberResponseDTO();
         given(memberService.findByUserID(any())).willThrow(new IllegalArgumentException());

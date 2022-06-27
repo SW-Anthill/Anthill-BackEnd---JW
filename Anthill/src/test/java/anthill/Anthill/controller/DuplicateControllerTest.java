@@ -14,6 +14,8 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -32,12 +34,11 @@ class DuplicateControllerTest {
     private MemberService memberService;
 
     @Test
-    @DisplayName("닉네임 중복 테스트 false 반환")
-    public void checkNicknameDuplicateFalseTest() throws Exception {
+    public void 닉네임_중복되지않는_테스트() throws Exception {
         //given
-        boolean test = false;
+        boolean result = false;
         String nickName = "testNickName";
-        given(memberService.checkNicknameDuplicate(nickName)).willReturn(test);
+        given(memberService.checkNicknameDuplicate(nickName)).willReturn(result);
 
 
         //when
@@ -48,12 +49,15 @@ class DuplicateControllerTest {
         resultActions
                 .andExpect(status().isOk())
                 .andDo(document("nick-name-non-duplicate",
+                        preprocessResponse(prettyPrint()),
                         pathParameters(
-                                parameterWithName("nickname").description("멤버 닉네임")
+                                parameterWithName("nickname").description("닉네임")
                         ),
 
                         responseFields(
-                                fieldWithPath("message").description("중복 시 true 중복 되지 않을 시 false")
+                                fieldWithPath("message").description("메시지"),
+                                fieldWithPath("responseData").description("반환값"),
+                                fieldWithPath("errorMessage").description("에러 메시지")
                         )
 
                 ));
@@ -61,12 +65,11 @@ class DuplicateControllerTest {
     }
 
     @Test
-    @DisplayName("닉네임 중복 테스트 true 반환")
-    public void checkNicknameDuplicateTrueTest() throws Exception {
+    public void 닉네임_중복_테스트() throws Exception {
         //given
-        boolean test = true;
+        boolean result = true;
         String nickName = "testNickName";
-        given(memberService.checkNicknameDuplicate(nickName)).willReturn(test);
+        given(memberService.checkNicknameDuplicate(nickName)).willReturn(result);
 
         //when
         ResultActions resultActions = mvc.perform(RestDocumentationRequestBuilders.get("/user-nickname/{nickname}", nickName));
@@ -75,29 +78,27 @@ class DuplicateControllerTest {
         resultActions
                 .andExpect(status().isOk())
                 .andDo(document("nick-name-duplicate",
+                        preprocessResponse(prettyPrint()),
                         pathParameters(
-                                parameterWithName("nickname").description("멤버 닉네임")
+                                parameterWithName("nickname").description("닉네임")
                         ),
 
                         responseFields(
-                                fieldWithPath("message").description("중복 시 true 중복 되지 않을 시 false")
+                                fieldWithPath("message").description("메시지"),
+                                fieldWithPath("responseData").description("반환값"),
+                                fieldWithPath("errorMessage").description("에러 메시지")
                         )
                 ));
 
     }
 
-    private MemberDuplicateResponseDTO makeMemberDuplicateResponseDTO(boolean result) {
-        return MemberDuplicateResponseDTO.builder()
-                                         .message(String.valueOf(result))
-                                         .build();
-    }
 
     @Test
-    public void 유저아이디중복테스트false반환() throws Exception {
+    public void 아이디_중복되지않는_테스트() throws Exception {
         //given
-        boolean test = false;
+        boolean result = false;
         String userId = "testUserId";
-        given(memberService.checkUserIdDuplicate(userId)).willReturn(test);
+        given(memberService.checkUserIdDuplicate(userId)).willReturn(result);
 
 
         //when
@@ -108,12 +109,15 @@ class DuplicateControllerTest {
         resultActions
                 .andExpect(status().isOk())
                 .andDo(document("user-id-non-duplicate",
+                        preprocessResponse(prettyPrint()),
                         pathParameters(
-                                parameterWithName("userId").description("멤버 아이디")
+                                parameterWithName("userId").description("아이디")
                         ),
 
                         responseFields(
-                                fieldWithPath("message").description("중복 시 true 중복 되지 않을 시 false")
+                                fieldWithPath("message").description("메시지"),
+                                fieldWithPath("responseData").description("반환값"),
+                                fieldWithPath("errorMessage").description("에러 메시지")
                         )
 
                 ));
@@ -121,11 +125,11 @@ class DuplicateControllerTest {
     }
 
     @Test
-    public void 유저아이디중복테스트true반환() throws Exception {
+    public void 아이디_중복_테스트() throws Exception {
         //given
-        boolean test = true;
+        boolean result = true;
         String userId = "testUserId";
-        given(memberService.checkUserIdDuplicate(userId)).willReturn(test);
+        given(memberService.checkUserIdDuplicate(userId)).willReturn(result);
 
 
         //when
@@ -136,12 +140,15 @@ class DuplicateControllerTest {
         resultActions
                 .andExpect(status().isOk())
                 .andDo(document("user-id-duplicate",
+                        preprocessResponse(prettyPrint()),
                         pathParameters(
-                                parameterWithName("userId").description("멤버 아이디")
+                                parameterWithName("userId").description("아이디")
                         ),
 
                         responseFields(
-                                fieldWithPath("message").description("중복 시 true 중복 되지 않을 시 false")
+                                fieldWithPath("message").description("메시지"),
+                                fieldWithPath("responseData").description("반환값"),
+                                fieldWithPath("errorMessage").description("에러 메시지")
                         )
 
                 ));
@@ -149,11 +156,11 @@ class DuplicateControllerTest {
     }
 
     @Test
-    public void 유저전화번호중복테스트false반환() throws Exception {
+    public void 전화번호_중복_테스트() throws Exception {
         //given
-        boolean test = false;
+        boolean result = false;
         String phoneNumber = "01012345678";
-        given(memberService.checkPhoneNumberDuplicate(phoneNumber)).willReturn(test);
+        given(memberService.checkPhoneNumberDuplicate(phoneNumber)).willReturn(result);
 
 
         //when
@@ -164,12 +171,15 @@ class DuplicateControllerTest {
         resultActions
                 .andExpect(status().isOk())
                 .andDo(document("user-phonenumber-non-duplicate",
+                        preprocessResponse(prettyPrint()),
                         pathParameters(
-                                parameterWithName("phonenumber").description("멤버 전화번호")
+                                parameterWithName("phonenumber").description("전화번호")
                         ),
 
                         responseFields(
-                                fieldWithPath("message").description("중복 시 true 중복 되지 않을 시 false")
+                                fieldWithPath("message").description("메시지"),
+                                fieldWithPath("responseData").description("반환값"),
+                                fieldWithPath("errorMessage").description("에러 메시지")
                         )
 
                 ));
@@ -177,11 +187,11 @@ class DuplicateControllerTest {
     }
 
     @Test
-    public void 유저전화번호중복테스트true반환() throws Exception {
+    public void 전화번호_중복되지않는_테스트() throws Exception {
         //given
-        boolean test = true;
+        boolean result = true;
         String phoneNumber = "01012345678";
-        given(memberService.checkPhoneNumberDuplicate(phoneNumber)).willReturn(test);
+        given(memberService.checkPhoneNumberDuplicate(phoneNumber)).willReturn(result);
 
 
         //when
@@ -192,16 +202,25 @@ class DuplicateControllerTest {
         resultActions
                 .andExpect(status().isOk())
                 .andDo(document("user-phonenumber-duplicate",
+                        preprocessResponse(prettyPrint()),
                         pathParameters(
-                                parameterWithName("phonenumber").description("멤버 전화번호")
+                                parameterWithName("phonenumber").description("전화번호")
                         ),
 
                         responseFields(
-                                fieldWithPath("message").description("중복 시 true 중복 되지 않을 시 false")
+                                fieldWithPath("message").description("메시지"),
+                                fieldWithPath("responseData").description("반환값"),
+                                fieldWithPath("errorMessage").description("에러 메시지")
                         )
 
                 ));
 
+    }
+
+    private MemberDuplicateResponseDTO makeMemberDuplicateResponseDTO(boolean result) {
+        return MemberDuplicateResponseDTO.builder()
+                                         .message(String.valueOf(result))
+                                         .build();
     }
 
 }
