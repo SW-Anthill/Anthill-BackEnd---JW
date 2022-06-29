@@ -65,6 +65,10 @@ public class Board {
             this.member.getBoards()
                        .remove(this);
         }
+    }
 
+    public void changeInfo(String changedTitle, String changedContent) {
+        this.title = changedTitle;
+        this.content = changedContent;
     }
 }
