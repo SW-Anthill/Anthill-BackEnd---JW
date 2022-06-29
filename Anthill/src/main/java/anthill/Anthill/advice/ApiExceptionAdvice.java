@@ -3,6 +3,7 @@ package anthill.Anthill.advice;
 
 import anthill.Anthill.dto.common.BasicResponseDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +46,13 @@ public class ApiExceptionAdvice {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                              .body(makeBasicResponseDTO(FAIL, "값이 존재하지 않음"));
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<BasicResponseDTO> AuthenticationException(AuthenticationException e) {
+        log.error(e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                             .body(makeBasicResponseDTO(FAIL, "토큰이 유효하지 않음"));
     }
 
 
