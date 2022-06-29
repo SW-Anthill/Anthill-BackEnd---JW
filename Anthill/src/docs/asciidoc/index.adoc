@@ -29,3 +29,15 @@ operation::member-get-by-id-success[snippets='http-request,path-parameters,http-
 
 == Member 회원 로그인
 operation::member-login-success[snippets='http-request,http-response,response-headers']
+
+[[Board-API]]
+== Board API
+
+== 게시글 작성
+operation::board-posting-success[snippets='http-request,request-headers,request-fields,http-response,response-fields']
+
+== 게시글 수정
+operation::board-update-success[snippets='http-request,request-headers,request-fields,http-response,response-fields']
+
+== 게시글 삭제
+operation::board-delete-success[snippets='http-request,request-headers,request-fields,http-response,response-fields']
