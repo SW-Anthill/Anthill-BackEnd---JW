@@ -1,6 +1,7 @@
 package anthill.Anthill.controller;
 
 import anthill.Anthill.dto.member.MemberDuplicateResponseDTO;
+import anthill.Anthill.service.JwtService;
 import anthill.Anthill.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,9 @@ class DuplicateControllerTest {
 
     @Autowired
     private MockMvc mvc;
+
+    @MockBean
+    private JwtService jwtService;
 
     @MockBean
     private MemberService memberService;
