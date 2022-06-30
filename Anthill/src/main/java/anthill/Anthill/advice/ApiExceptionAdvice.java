@@ -23,14 +23,14 @@ public class ApiExceptionAdvice {
     public ResponseEntity<BasicResponseDTO> dataInvalidateExceptionHandler(MethodArgumentNotValidException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(makeBasicResponseDTO(FAIL, "DB 제약조건 오류"));
+                             .body(makeBasicResponseDTO(FAIL, "입력 데이터가 유효하지 않음"));
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<BasicResponseDTO> dataBaseExceptionHandler(DataIntegrityViolationException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT)
-                             .body(makeBasicResponseDTO(FAIL, "데이터 중복 발생"));
+                             .body(makeBasicResponseDTO(FAIL, "DB 제약조건 오류"));
     }
 
     @ExceptionHandler(IllegalStateException.class)
