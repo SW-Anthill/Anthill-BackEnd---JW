@@ -36,8 +36,14 @@ operation::member-login-success[snippets='http-request,http-response,response-he
 == 게시글 작성
 operation::board-posting-success[snippets='http-request,request-headers,request-fields,http-response,response-fields']
 
+== 게시글 조회
+operation::board-get-by-id-success[snippets='request-fields,http-response,response-fields']
+
 == 게시글 수정
 operation::board-update-success[snippets='http-request,request-headers,request-fields,http-response,response-fields']
 
 == 게시글 삭제
 operation::board-delete-success[snippets='http-request,request-headers,request-fields,http-response,response-fields']
+
+== 게시글 페이징 조회
+operation::board-paging-success[snippets='http-request,http-response,response-fields']
