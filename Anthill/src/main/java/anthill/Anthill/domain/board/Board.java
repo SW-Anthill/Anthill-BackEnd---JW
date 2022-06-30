@@ -1,6 +1,9 @@
 package anthill.Anthill.domain.board;
 
 import anthill.Anthill.domain.member.Member;
+import anthill.Anthill.dto.board.BoardPagingDTO;
+import anthill.Anthill.dto.board.BoardResponseDTO;
+import anthill.Anthill.dto.member.MemberResponseDTO;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -70,5 +73,29 @@ public class Board {
     public void changeInfo(String changedTitle, String changedContent) {
         this.title = changedTitle;
         this.content = changedContent;
+    }
+
+    public BoardResponseDTO toBoardResponseDTO() {
+        return BoardResponseDTO.builder()
+                               .id(this.id)
+                               .title(this.title)
+                               .content(this.content)
+                               .writer(this.writer)
+                               .hits(this.hits)
+                               .build();
+    }
+
+    public void increaseHits() {
+        this.hits = this.hits++;
+    }
+
+    public BoardPagingDTO toBoardPagingDTO(Board board) {
+        return BoardPagingDTO.builder()
+                             .id(board.id)
+                             .title(board.title)
+                             .content(board.content)
+                             .writer(board.writer)
+                             .hits(board.hits)
+                             .build();
     }
 }
