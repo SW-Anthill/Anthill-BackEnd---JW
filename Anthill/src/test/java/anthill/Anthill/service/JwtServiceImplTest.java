@@ -2,11 +2,9 @@ package anthill.Anthill.service;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.StringTokenizer;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 class JwtServiceImplTest {
     private JwtService jwtService = new JwtServiceImpl();
@@ -20,7 +18,7 @@ class JwtServiceImplTest {
         //when
         String token = jwtService.create("userId", userId, "access-token");
 
-        StringTokenizer st = new StringTokenizer(token,".");
+        StringTokenizer st = new StringTokenizer(token, ".");
         String header = st.nextToken();
         //then
         Assertions.assertThat(header)
@@ -38,11 +36,12 @@ class JwtServiceImplTest {
         boolean result = jwtService.isUsable(token);
 
         //then
-        Assertions.assertThat(result).isEqualTo(true);
+        Assertions.assertThat(result)
+                  .isEqualTo(true);
     }
 
     @Test
-    void 토큰_유효하지않음_테스트(){
+    void 토큰_유효하지않음_테스트() {
         //given
         String token = "a.b.c";
 
@@ -50,7 +49,8 @@ class JwtServiceImplTest {
         boolean result = jwtService.isUsable(token);
 
         //then
-        Assertions.assertThat(result).isEqualTo(false);
+        Assertions.assertThat(result)
+                  .isEqualTo(false);
     }
 
 }
