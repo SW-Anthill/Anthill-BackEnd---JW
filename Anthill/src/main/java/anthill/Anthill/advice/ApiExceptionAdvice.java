@@ -23,8 +23,7 @@ public class ApiExceptionAdvice {
     public ResponseEntity<BasicResponseDTO> dataInvalidateExceptionHandler(MethodArgumentNotValidException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(makeBasicResponseDTO(FAIL, "입력 데이터가 유효하지 않습니다."));
-
+                             .body(makeBasicResponseDTO(FAIL, "DB 제약조건 오류"));
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
