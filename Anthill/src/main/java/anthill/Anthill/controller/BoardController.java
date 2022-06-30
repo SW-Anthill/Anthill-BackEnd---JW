@@ -1,18 +1,15 @@
 package anthill.Anthill.controller;
 
-import anthill.Anthill.dto.board.BoardDeleteDTO;
-import anthill.Anthill.dto.board.BoardRequestDTO;
-import anthill.Anthill.dto.board.BoardUpdateDTO;
+import anthill.Anthill.dto.board.*;
 import anthill.Anthill.dto.common.BasicResponseDTO;
 import anthill.Anthill.service.BoardService;
-import anthill.Anthill.service.JwtService;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.websocket.AuthenticationException;
+
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -21,8 +18,31 @@ import javax.validation.Valid;
 public class BoardController {
     private final BoardService boardService;
 
-    private final String FAIL = "failure";
-    private final String SUCCESS = "success";
+    private final static String FAIL = "failure";
+    private final static String SUCCESS = "success";
+
+    @GetMapping("/{boardid}")
+    public ResponseEntity<BasicResponseDTO> select(@PathVariable("boardid") Long boardId) {
+
+        BoardResponseDTO boardResponseDTO = boardService.select(boardId);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                             .body(makeSelectResponseDTO(SUCCESS, boardResponseDTO));
+
+    }
+
+    @GetMapping({"/page/{pagingid}"})
+    public ResponseEntity<BasicResponseDTO> paging(@PathVariable("pagingid") Integer pagingId) {
+
+        Page<BoardPagingDTO> resultPage = boardService.paging(pagingId - 1);
+
+        if (pagingId > resultPage.getTotalPages()) {
+            throw new IllegalStateException();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK)
+                             .body(makeSelectResponseDTO(SUCCESS, resultPage));
+    }
 
     @PostMapping
     public ResponseEntity<BasicResponseDTO> posting(@Valid @RequestBody BoardRequestDTO boardRequestDTO) {
@@ -52,6 +72,13 @@ public class BoardController {
     private BasicResponseDTO makeBasicResponseDTO(String message) {
         return BasicResponseDTO.builder()
                                .message(message)
+                               .build();
+    }
+
+    private <T> BasicResponseDTO makeSelectResponseDTO(String message, T responseData) {
+        return BasicResponseDTO.builder()
+                               .message(message)
+                               .responseData(responseData)
                                .build();
     }
 
