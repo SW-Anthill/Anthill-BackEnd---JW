@@ -23,8 +23,8 @@ public class MemberController {
 
     private final JwtService jwtService;
 
-    private final String FAIL = "failure";
-    private final String SUCCESS = "success";
+    private final static String FAIL = "failure";
+    private final static String SUCCESS = "success";
 
     @GetMapping
     public String helloMessage() {

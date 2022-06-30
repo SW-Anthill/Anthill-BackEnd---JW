@@ -16,8 +16,8 @@ public class DuplicateController {
 
     private final MemberService memberService;
 
-    private final String DUPLICATE = "duplicate";
-    private final String NON_DUPLICATE = "non-duplicate";
+    private final static String DUPLICATE = "duplicate";
+    private final static String NON_DUPLICATE = "non-duplicate";
 
     @GetMapping("/user-nickname/{nickname}")
     public ResponseEntity<BasicResponseDTO> checkNicknameDuplicate(@PathVariable String nickname) {
