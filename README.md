@@ -50,8 +50,7 @@ spring.jpa.properties.hibernate.format_sql=true
 
 시작부터 배포까지의 과정이 모두 담겨있으니 관심있으시면 다음링크를 참고하세요.
 
-https://junuuu.tistory.com/category/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8
-
+https://junuuu.tistory.com/category/%EA%B2%8C%EC%8B%9C%ED%8C%90%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8
 
 
 # 실제 프로젝트를 서비스하고 있는 링크
