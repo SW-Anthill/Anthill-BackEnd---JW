@@ -131,9 +131,9 @@ class MemberControllerTest {
                                 fieldWithPath("nickName").description("닉네임"),
                                 fieldWithPath("password").description("비밀번호"),
                                 fieldWithPath("phoneNumber").description("전화 번호"),
-                                fieldWithPath("address.address1").description("주소")
+                                fieldWithPath("address.streetNameAddress").description("주소")
                                                                  .optional(),
-                                fieldWithPath("address.address2").description("상세 주소")
+                                fieldWithPath("address.detainAddress").description("상세 주소")
                                                                  .optional(),
                                 fieldWithPath("address.zipCode").description("우편 번호")
                                                                 .optional()
@@ -225,9 +225,9 @@ class MemberControllerTest {
                                      fieldWithPath("responseData.name").description("이름"),
                                      fieldWithPath("responseData.nickName").description("닉네임"),
                                      fieldWithPath("responseData.phoneNumber").description("전화 번호"),
-                                     fieldWithPath("responseData.address.address1").description("주소")
+                                     fieldWithPath("responseData.address.streetNameAddress").description("주소")
                                                                                    .optional(),
-                                     fieldWithPath("responseData.address.address2").description("상세 주소")
+                                     fieldWithPath("responseData.address.detainAddress").description("상세 주소")
                                                                                    .optional(),
                                      fieldWithPath("responseData.address.zipCode").description("우편 번호")
                                                                                   .optional(),
@@ -253,8 +253,8 @@ class MemberControllerTest {
 
     private MemberResponseDTO getMemberResponseDTO() {
         Address myAddress = Address.builder()
-                                   .address1("경기도 시흥시")
-                                   .address2("XX아파트 XX호")
+                                   .streetNameAddress("경기도 시흥시")
+                                   .detainAddress("XX아파트 XX호")
                                    .zipCode("429-010")
                                    .build();
 
@@ -272,8 +272,8 @@ class MemberControllerTest {
     private MemberRequestDTO getMemberRequestDTO() {
 
         Address myAddress = Address.builder()
-                                   .address1("경기도 시흥시")
-                                   .address2("XX아파트 XX호")
+                                   .streetNameAddress("경기도 시흥시")
+                                   .detainAddress("XX아파트 XX호")
                                    .zipCode("429-010")
                                    .build();
 
