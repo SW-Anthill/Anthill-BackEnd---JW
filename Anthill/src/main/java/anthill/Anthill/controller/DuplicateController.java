@@ -37,9 +37,9 @@ public class DuplicateController {
 
     }
 
-    @GetMapping("/user-phonenumber/{phonenumber}")
-    public ResponseEntity<BasicResponseDTO> checkPhoneNumberDuplicate(@PathVariable String phonenumber) {
-        boolean result = memberService.checkUserIdDuplicate(phonenumber);
+    @GetMapping("/user-phone-number/{phone-number}")
+    public ResponseEntity<BasicResponseDTO> checkPhoneNumberDuplicate(@PathVariable("phone-number") String phoneNumber) {
+        boolean result = memberService.checkUserIdDuplicate(phoneNumber);
         String message = makeMessage(result);
         return ResponseEntity.status(HttpStatus.OK)
                              .body(makeBasicResponseDTO(message));

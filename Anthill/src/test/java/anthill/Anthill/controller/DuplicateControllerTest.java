@@ -167,16 +167,16 @@ class DuplicateControllerTest {
 
 
         //when
-        ResultActions resultActions = mvc.perform(RestDocumentationRequestBuilders.get("/user-phonenumber/{phonenumber}", phoneNumber));
+        ResultActions resultActions = mvc.perform(RestDocumentationRequestBuilders.get("/user-phone-number/{phone-number}", phoneNumber));
 
 
         //then
         resultActions
                 .andExpect(status().isOk())
-                .andDo(document("user-phonenumber-non-duplicate",
+                .andDo(document("user-phone-number-non-duplicate",
                         preprocessResponse(prettyPrint()),
                         pathParameters(
-                                parameterWithName("phonenumber").description("전화번호")
+                                parameterWithName("phone-number").description("전화번호")
                         ),
 
                         responseFields(
@@ -198,16 +198,16 @@ class DuplicateControllerTest {
 
 
         //when
-        ResultActions resultActions = mvc.perform(RestDocumentationRequestBuilders.get("/user-phonenumber/{phonenumber}", phoneNumber));
+        ResultActions resultActions = mvc.perform(RestDocumentationRequestBuilders.get("/user-phone-number/{phone-number}", phoneNumber));
 
 
         //then
         resultActions
                 .andExpect(status().isOk())
-                .andDo(document("user-phonenumber-duplicate",
+                .andDo(document("user-phone-number-duplicate",
                         preprocessResponse(prettyPrint()),
                         pathParameters(
-                                parameterWithName("phonenumber").description("전화번호")
+                                parameterWithName("phone-number").description("전화번호")
                         ),
 
                         responseFields(

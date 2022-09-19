@@ -17,12 +17,10 @@ import javax.validation.Valid;
 @RequestMapping("/boards")
 public class BoardController {
     private final BoardService boardService;
-
-    private final static String FAIL = "failure";
     private final static String SUCCESS = "success";
 
-    @GetMapping("/{boardid}")
-    public ResponseEntity<BasicResponseDTO> select(@PathVariable("boardid") Long boardId) {
+    @GetMapping("/{board-id}")
+    public ResponseEntity<BasicResponseDTO> select(@PathVariable("board-id") Long boardId) {
 
         BoardResponseDTO boardResponseDTO = boardService.select(boardId);
 
@@ -31,8 +29,8 @@ public class BoardController {
 
     }
 
-    @GetMapping({"/page/{pagingid}"})
-    public ResponseEntity<BasicResponseDTO> paging(@PathVariable("pagingid") Integer pagingId) {
+    @GetMapping({"/page/{paging-id}"})
+    public ResponseEntity<BasicResponseDTO> paging(@PathVariable("paging-id") Integer pagingId) {
 
         Page<BoardPagingDTO> resultPage = boardService.paging(pagingId - 1);
 
@@ -53,7 +51,7 @@ public class BoardController {
 
     }
 
-    @PutMapping("/{boardid}")
+    @PutMapping("/{board-id}")
     public ResponseEntity<BasicResponseDTO> update(@RequestBody BoardUpdateDTO boardUpdateDTO) throws Exception {
         boardService.changeInfo(boardUpdateDTO);
         return ResponseEntity.status(HttpStatus.OK)
@@ -61,7 +59,7 @@ public class BoardController {
     }
 
 
-    @DeleteMapping("/{boardid}")
+    @DeleteMapping("/{board-id}")
     public ResponseEntity<BasicResponseDTO> delete(@RequestBody BoardDeleteDTO boardDeleteDTO) throws Exception {
         boardService.delete(boardDeleteDTO);
         return ResponseEntity.status(HttpStatus.OK)

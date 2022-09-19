@@ -19,7 +19,7 @@ operation::nick-name-duplicate[snippets='http-request,path-parameters,http-respo
 operation::user-id-non-duplicate[snippets='http-request,path-parameters,http-response,response-fields']
 
 == Member 휴대폰번호 중복 조회
-operation::user-phonenumber-non-duplicate[snippets='http-request,path-parameters,http-response,response-fields']
+operation::user-phone-number-non-duplicate[snippets='http-request,path-parameters,http-response,response-fields']
 
 == Member 회원 가입
 operation::member-join-success[snippets='http-request,request-fields,http-response']
