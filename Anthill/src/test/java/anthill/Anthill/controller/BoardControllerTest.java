@@ -106,7 +106,7 @@ class BoardControllerTest {
     @Test
     void 게시글_페이징() throws Exception {
         final int pagingId = 1;
-        Page<BoardPagingDTO> boardPagingDTO = makePageingDTO();
+        BoardPageResponseDTO boardPagingDTO = makePagingDTO();
         given(boardService.paging(any(Integer.class))).willReturn(boardPagingDTO);
 
         //then
@@ -122,35 +122,15 @@ class BoardControllerTest {
                                      fieldWithPath("message").description("메시지"),
 
                                      fieldWithPath("responseData").description("반환값"),
-                                     fieldWithPath("responseData.content.[].id").description("게시글 번호"),
-                                     fieldWithPath("responseData.content.[].title").description("제목"),
-                                     fieldWithPath("responseData.content.[].content").description("본문"),
-                                     fieldWithPath("responseData.content.[].writer").description("작성자"),
-                                     fieldWithPath("responseData.content.[].hits").description("조회수"),
-
-                                     fieldWithPath("responseData.pageable.sort.sorted").description("정렬 됬는지 여부"),
-                                     fieldWithPath("responseData.pageable.sort.unsorted").description("정렬 안됬는지 여부"),
-                                     fieldWithPath("responseData.pageable.sort.empty").description("데이터가 비었는지 여부"),
-
-                                     fieldWithPath("responseData.pageable.pageNumber").description("현재 페이지 번호"),
-                                     fieldWithPath("responseData.pageable.pageSize").description("한 페이지당 조회할 데이터 개수"),
-                                     fieldWithPath("responseData.pageable.offset").description("몇번째 데이터인지 (0부터 시작)"),
-                                     fieldWithPath("responseData.pageable.paged").description("페이징 정보를 포함하는지 여부"),
-                                     fieldWithPath("responseData.pageable.unpaged").description("페이징 정보를 안포함하는지 여부"),
-
-                                     fieldWithPath("responseData.last").description("마지막 페이지 인지 여부"),
-                                     fieldWithPath("responseData.totalPages").description("전체 페이지 개수"),
+                                     fieldWithPath("responseData.contents.[].id").description("게시글 번호"),
+                                     fieldWithPath("responseData.contents.[].title").description("제목"),
+                                     fieldWithPath("responseData.contents.[].content").description("본문"),
+                                     fieldWithPath("responseData.contents.[].writer").description("작성자"),
+                                     fieldWithPath("responseData.contents.[].hits").description("조회수"),
+                                     fieldWithPath("responseData.totalPage").description("전체 페이지 개수"),
                                      fieldWithPath("responseData.totalElements").description("테이블 데이터 총 개수"),
-                                     fieldWithPath("responseData.first").description("첫번째 페이지인지 여부"),
-                                     fieldWithPath("responseData.numberOfElements").description("요청 페이지에서 조회 된 데이터 개수"),
-                                     fieldWithPath("responseData.number").description("현재 페이지 번호"),
+                                     fieldWithPath("responseData.curPage").description("현재 페이지 번호"),
                                      fieldWithPath("responseData.size").description("한 페이지당 조회할 데이터 개수"),
-
-                                     fieldWithPath("responseData.sort.sorted").description("정렬 됬는지 여부"),
-                                     fieldWithPath("responseData.sort.unsorted").description("정렬 안됬는지 여부"),
-                                     fieldWithPath("responseData.sort.empty").description("데이터가 비었는지 여부"),
-
-                                     fieldWithPath("responseData.empty").description("데이터가 비었는지 여부"),
 
                                      fieldWithPath("errorMessage").description("에러 메시지")
 
@@ -327,22 +307,28 @@ class BoardControllerTest {
         return boardRequestDTO;
     }
 
-    private Page<BoardPagingDTO> makePageingDTO() {
+    private BoardPageResponseDTO makePagingDTO() {
 
-        List<BoardPagingDTO> data = new ArrayList<>();
+        List<BoardInfoDTO> data = new ArrayList<>();
         for (long i = 1; i <= 2; i++) {
-            data.add(BoardPagingDTO.builder()
-                                   .id(i)
-                                   .title("본문")
-                                   .content("제목")
-                                   .writer("작성자")
-                                   .hits(i)
-                                   .build());
+            data.add(BoardInfoDTO.builder()
+                                 .id(i)
+                                 .title("본문")
+                                 .content("제목")
+                                 .writer("작성자")
+                                 .hits(i)
+                                 .build());
         }
 
+        return BoardPageResponseDTO
+                .builder()
+                .contents(data)
+                .totalPage(1)
+                .totalElements(2)
+                .curPage(1)
+                .size(10)
+                .build();
 
-        Pageable pageable = PageRequest.of(0, 10);
-        return new PageImpl<BoardPagingDTO>(data, pageable, 2);
     }
 
 }

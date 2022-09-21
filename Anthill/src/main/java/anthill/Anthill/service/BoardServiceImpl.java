@@ -49,12 +49,17 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Page<BoardPagingDTO> paging(int id) {
+    public BoardPageResponseDTO paging(int id) {
 
         Pageable curPage = PageRequest.of(id, 10, Sort.by("id")
                                                       .descending());
         Page<Board> result = boardRepository.findAll(curPage);
-        Page<BoardPagingDTO> map = result.map(board -> board.toBoardPagingDTO(board));
+
+        if (id > result.getTotalPages()) {
+            throw new IllegalStateException("유효하지 않은 페이지");
+        }
+
+        BoardPageResponseDTO map = BoardPageResponseDTO.toBoardPagingDTO(result);
         return map;
     }
 

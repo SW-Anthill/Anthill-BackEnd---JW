@@ -11,7 +11,7 @@ public interface BoardService {
 
     void delete(BoardDeleteDTO boardDeleteDTO) throws AuthenticationException;
 
-    Page<BoardPagingDTO> paging(int id);
+    BoardPageResponseDTO paging(int id);
 
     BoardResponseDTO select(Long id);
 

@@ -32,11 +32,7 @@ public class BoardController {
     @GetMapping({"/page/{paging-id}"})
     public ResponseEntity<BasicResponseDTO> paging(@PathVariable("paging-id") Integer pagingId) {
 
-        Page<BoardPagingDTO> resultPage = boardService.paging(pagingId - 1);
-
-        if (pagingId > resultPage.getTotalPages()) {
-            throw new IllegalStateException();
-        }
+        BoardPageResponseDTO resultPage = boardService.paging(pagingId - 1);
 
         return ResponseEntity.status(HttpStatus.OK)
                              .body(makeSelectResponseDTO(SUCCESS, resultPage));

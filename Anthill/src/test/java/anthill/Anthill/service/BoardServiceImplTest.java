@@ -37,17 +37,17 @@ class BoardServiceImplTest {
         }
 
         //when
-        Page<BoardPagingDTO> firstPaging = boardService.paging(0);
+        BoardPageResponseDTO firstPaging = boardService.paging(0);
 
         Pageable LastPageWithTenElements = PageRequest.of(4, 10);
-        Page<BoardPagingDTO> lastPaging = boardService.paging(4);
+        BoardPageResponseDTO lastPaging = boardService.paging(4);
 
         //then
         Assertions.assertThat(10)
-                  .isEqualTo(firstPaging.getContent()
+                  .isEqualTo(firstPaging.getContents()
                                         .size());
         Assertions.assertThat(3)
-                  .isEqualTo(lastPaging.getContent()
+                  .isEqualTo(lastPaging.getContents()
                                        .size());
     }
 
@@ -60,7 +60,7 @@ class BoardServiceImplTest {
         //then
         assertThrows(IllegalArgumentException.class, () -> {
             //when
-            Page<BoardPagingDTO> firstPaging = boardService.paging(-1);
+            boardService.paging(-1);
         });
 
     }
@@ -72,10 +72,11 @@ class BoardServiceImplTest {
         boardService.posting(boardRequestDTO);
 
         //when
-        Page<BoardPagingDTO> firstPaging = boardService.paging(100);
+        assertThrows(IllegalStateException.class, () -> {
+            //when
+            boardService.paging(100);
+        });
 
-        //then
-        Assertions.assertThat(firstPaging.getContent().size()).isEqualTo(0);
     }
 
 
