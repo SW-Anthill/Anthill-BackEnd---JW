@@ -1,8 +1,11 @@
 package anthill.Anthill.service;
 
 import anthill.Anthill.domain.board.Board;
+import anthill.Anthill.domain.member.Member;
 import anthill.Anthill.dto.board.*;
 import anthill.Anthill.repository.BoardRepository;
+import anthill.Anthill.repository.MemberRepository;
+import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,16 +27,21 @@ class BoardServiceImplTest {
 
     @Autowired
     BoardRepository boardRepository;
+    @Autowired
+    MemberRepository memberRepository;
+
+    long savedMemberId;
 
     @BeforeEach
     void setUp() {
-        boardService = new BoardServiceImpl(boardRepository);
+        boardService = new BoardServiceImpl(boardRepository, memberRepository);
+        savedMemberId = saveMember();
     }
 
     @Test
     void 페이징() {
         //given
-        BoardRequestDTO boardRequestDTO = makeBoardRequestDTO();
+        BoardRequestDTO boardRequestDTO = makeBoardRequestDTO(savedMemberId);
         for (int i = 0; i < 43; i++) {
             boardService.posting(boardRequestDTO);
         }
@@ -56,7 +64,8 @@ class BoardServiceImplTest {
     @Test
     void 페이징음수() {
         //given
-        BoardRequestDTO boardRequestDTO = makeBoardRequestDTO();
+
+        BoardRequestDTO boardRequestDTO = makeBoardRequestDTO(savedMemberId);
         boardService.posting(boardRequestDTO);
 
         //then
@@ -70,7 +79,7 @@ class BoardServiceImplTest {
     @Test
     void 페이징초과() {
         //given
-        BoardRequestDTO boardRequestDTO = makeBoardRequestDTO();
+        BoardRequestDTO boardRequestDTO = makeBoardRequestDTO(savedMemberId);
         boardService.posting(boardRequestDTO);
 
         //when
@@ -85,7 +94,7 @@ class BoardServiceImplTest {
     @Test
     void 게시글_작성_테스트() {
         //given
-        BoardRequestDTO boardRequestDTO = makeBoardRequestDTO();
+        BoardRequestDTO boardRequestDTO = makeBoardRequestDTO(savedMemberId);
 
         //when
         boardService.posting(boardRequestDTO);
@@ -94,13 +103,15 @@ class BoardServiceImplTest {
         List<Board> result = boardRepository.findAll();
         Assertions.assertThat(result.size())
                   .isEqualTo(1);
-        Assertions.assertThat(result.get(0).getMember()).isNotNull();
+        Assertions.assertThat(result.get(0)
+                                    .getMember())
+                  .isNotNull();
     }
 
     @Test
     void 게시글_조회_테스트() throws Exception {
         //given
-        BoardRequestDTO boardRequestDTO = makeBoardRequestDTO();
+        BoardRequestDTO boardRequestDTO = makeBoardRequestDTO(savedMemberId);
         boardService.posting(boardRequestDTO);
 
         Board result = boardRepository.findAll()
@@ -120,7 +131,7 @@ class BoardServiceImplTest {
     @Test
     void 게시글_수정_테스트() throws Exception {
         //given
-        BoardRequestDTO boardRequestDTO = makeBoardRequestDTO();
+        BoardRequestDTO boardRequestDTO = makeBoardRequestDTO(savedMemberId);
         boardService.posting(boardRequestDTO);
 
         //when
@@ -148,7 +159,7 @@ class BoardServiceImplTest {
     @Test
     void 게시글_삭제_테스트() throws Exception {
         //given
-        BoardRequestDTO boardRequestDTO = makeBoardRequestDTO();
+        BoardRequestDTO boardRequestDTO = makeBoardRequestDTO(savedMemberId);
         boardService.posting(boardRequestDTO);
 
         //when
@@ -183,15 +194,29 @@ class BoardServiceImplTest {
     }
 
 
-    private BoardRequestDTO makeBoardRequestDTO() {
+    private BoardRequestDTO makeBoardRequestDTO(Long savedMemberId) {
 
         BoardRequestDTO boardRequestDTO = BoardRequestDTO.builder()
+                                                         .memberId(savedMemberId)
                                                          .title("제목")
                                                          .content("본문")
                                                          .writer("작성자")
                                                          .build();
 
         return boardRequestDTO;
+    }
+
+    private Long saveMember() {
+        Member savedMember = memberRepository.save(
+                Member.builder()
+                      .userId("junwoo")
+                      .password("123456789")
+                      .phoneNumber("01012345678")
+                      .name("김준우")
+                      .nickName("junwoo")
+                      .build()
+        );
+        return savedMember.getId();
     }
 
 }

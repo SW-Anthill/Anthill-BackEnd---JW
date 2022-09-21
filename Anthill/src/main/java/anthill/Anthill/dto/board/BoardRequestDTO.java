@@ -1,18 +1,20 @@
 package anthill.Anthill.dto.board;
 
 
-import anthill.Anthill.domain.board.Board;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardRequestDTO {
 
+    @NotNull(message = "사용자 아이디는 필수값입니다.")
+    Long memberId;
     @NotBlank(message = "제목을 입력해주세요")
     String title;
     @NotBlank(message = "본문을 입력해주세요")
@@ -20,19 +22,10 @@ public class BoardRequestDTO {
     String writer;
 
     @Builder
-    public BoardRequestDTO(String title, String content, String writer) {
+    public BoardRequestDTO(Long memberId, String title, String content, String writer) {
+        this.memberId = memberId;
         this.title = title;
         this.content = content;
         this.writer = writer;
-    }
-
-    public Board toEntity() {
-        Board board = Board.builder()
-                           .title(this.title)
-                           .content(this.content)
-                           .writer(this.writer)
-                           .hits(0L)
-                           .build();
-        return board;
     }
 }

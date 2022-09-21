@@ -69,7 +69,6 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findByUserId(userId)
                                .orElseThrow(() -> new IllegalArgumentException())
                                .toMemberResponseDTO();
-
     }
 
 }

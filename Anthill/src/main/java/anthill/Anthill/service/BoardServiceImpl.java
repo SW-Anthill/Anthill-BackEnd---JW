@@ -1,8 +1,10 @@
 package anthill.Anthill.service;
 
 import anthill.Anthill.domain.board.Board;
+import anthill.Anthill.domain.member.Member;
 import anthill.Anthill.dto.board.*;
 import anthill.Anthill.repository.BoardRepository;
+import anthill.Anthill.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.data.domain.Page;
@@ -19,10 +21,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public void posting(BoardRequestDTO boardRequestDTO) {
-        boardRepository.save(boardRequestDTO.toEntity());
+        Member member = memberRepository.findById(boardRequestDTO.getMemberId())
+                                        .orElseThrow(() -> new IllegalArgumentException());
+        Board board = Board.builder()
+                           .member(member)
+                           .title(boardRequestDTO.getTitle())
+                           .content(boardRequestDTO.getContent())
+                           .writer(boardRequestDTO.getWriter())
+                           .hits(0L)
+                           .build();
+
+        boardRepository.save(board);
     }
 
     @Override

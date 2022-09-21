@@ -38,12 +38,13 @@ public class Board {
     private Member member;
 
     @Builder
-    public Board(Long id, String title, String content, String writer, Long hits) {
+    public Board(Long id, String title, String content, String writer, Long hits, Member member) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.writer = writer;
         this.hits = hits;
+        this.member = member;
     }
 
     public void setMember(Member member) {

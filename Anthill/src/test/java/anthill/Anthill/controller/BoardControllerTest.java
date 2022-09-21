@@ -83,6 +83,7 @@ class BoardControllerTest {
                                              headerWithName("access-token").description("로그인 시 발급된 토큰")
                                      ),
                                      requestFields(
+                                             fieldWithPath("memberId").description("회원아이디"),
                                              fieldWithPath("title").description("제목"),
                                              fieldWithPath("content").description("본문"),
                                              fieldWithPath("writer").description("작성자")
@@ -293,6 +294,7 @@ class BoardControllerTest {
 
     private BoardRequestDTO makeBoardRequestDTO(String value) {
         BoardRequestDTO boardRequestDTO = BoardRequestDTO.builder()
+                                                         .memberId(1L)
                                                          .title(value)
                                                          .content(value)
                                                          .writer(value)
