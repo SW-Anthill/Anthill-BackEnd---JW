@@ -57,8 +57,7 @@ public class BoardServiceImpl implements BoardService {
         Page<BoardPagingDTO> map = result.map(board -> board.toBoardPagingDTO(board));
         return map;
     }
-
-    @Transactional(readOnly = true)
+    
     @Override
     public BoardResponseDTO select(Long id) {
 
