@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
@@ -66,7 +68,7 @@ class BoardServiceImplTest {
     }
 
     @Test
-    void 페이징초과(){
+    void 페이징초과() {
         //given
         BoardRequestDTO boardRequestDTO = makeBoardRequestDTO();
         boardService.posting(boardRequestDTO);
@@ -89,10 +91,10 @@ class BoardServiceImplTest {
         boardService.posting(boardRequestDTO);
 
         //then
-        Assertions.assertThat(boardRepository.findAll()
-                                             .size())
+        List<Board> result = boardRepository.findAll();
+        Assertions.assertThat(result.size())
                   .isEqualTo(1);
-
+        Assertions.assertThat(result.get(0).getMember()).isNotNull();
     }
 
     @Test
