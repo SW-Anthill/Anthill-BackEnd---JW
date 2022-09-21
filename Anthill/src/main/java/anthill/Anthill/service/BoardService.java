@@ -14,4 +14,6 @@ public interface BoardService {
     Page<BoardPagingDTO> paging(int id);
 
     BoardResponseDTO select(Long id);
+
+    void updateHitByBoardId(Long id);
 }

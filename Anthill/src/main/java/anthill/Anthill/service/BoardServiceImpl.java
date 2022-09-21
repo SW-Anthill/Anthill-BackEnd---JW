@@ -57,16 +57,17 @@ public class BoardServiceImpl implements BoardService {
         Page<BoardPagingDTO> map = result.map(board -> board.toBoardPagingDTO(board));
         return map;
     }
-    
+
     @Override
     public BoardResponseDTO select(Long id) {
-
         Board board = boardRepository.findById(id)
                                      .orElseThrow(() -> new IllegalArgumentException());
-        board.increaseHits();
-
         return board.toBoardResponseDTO();
+    }
 
+    @Override
+    public void updateHitByBoardId(Long id) {
+        boardRepository.updateHitByBoardId(id);
     }
 
 

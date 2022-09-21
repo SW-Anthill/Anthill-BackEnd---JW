@@ -85,10 +85,6 @@ public class Board {
                                .build();
     }
 
-    public void increaseHits() {
-        this.hits = this.hits++;
-    }
-
     public BoardPagingDTO toBoardPagingDTO(Board board) {
         return BoardPagingDTO.builder()
                              .id(board.id)
