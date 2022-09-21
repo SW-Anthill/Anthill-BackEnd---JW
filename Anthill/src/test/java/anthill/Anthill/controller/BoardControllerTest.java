@@ -110,13 +110,13 @@ class BoardControllerTest {
         given(boardService.paging(any(Integer.class))).willReturn(boardPagingDTO);
 
         //then
-        ResultActions resultActions = mvc.perform(get("/boards/page/{pagingid}", pagingId));
+        ResultActions resultActions = mvc.perform(get("/boards/page/{paging-id}", pagingId));
 
         resultActions.andExpect(status().isOk())
                      .andDo(document("board-paging-success",
                              preprocessResponse(prettyPrint()),
                              pathParameters(
-                                     parameterWithName("pagingid").description("페이징 번호")
+                                     parameterWithName("paging-id").description("페이징 번호")
                              ),
                              responseFields(
                                      fieldWithPath("message").description("메시지"),

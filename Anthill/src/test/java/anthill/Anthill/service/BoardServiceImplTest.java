@@ -26,7 +26,6 @@ class BoardServiceImplTest {
     @BeforeEach
     void setUp() {
         boardService = new BoardServiceImpl(boardRepository);
-
     }
 
     @Test
