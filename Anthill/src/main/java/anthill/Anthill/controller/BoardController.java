@@ -47,7 +47,7 @@ public class BoardController {
 
     }
 
-    @PutMapping("/{board-id}")
+    @PutMapping
     public ResponseEntity<BasicResponseDTO> update(@RequestBody BoardUpdateDTO boardUpdateDTO) throws Exception {
         boardService.changeInfo(boardUpdateDTO);
         return ResponseEntity.status(HttpStatus.OK)
@@ -55,7 +55,7 @@ public class BoardController {
     }
 
 
-    @DeleteMapping("/{board-id}")
+    @DeleteMapping
     public ResponseEntity<BasicResponseDTO> delete(@RequestBody BoardDeleteDTO boardDeleteDTO) throws Exception {
         boardService.delete(boardDeleteDTO);
         return ResponseEntity.status(HttpStatus.OK)

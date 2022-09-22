@@ -174,7 +174,7 @@ class BoardControllerTest {
         given(jwtService.isUsable(any())).willReturn(false);
 
         //when
-        ResultActions resultActions = mvc.perform(put("/boards/{boardId}", boardUpdateDTO.getId())
+        ResultActions resultActions = mvc.perform(put("/boards")
                 .content(body)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
@@ -193,7 +193,7 @@ class BoardControllerTest {
         given(jwtService.isUsable(any())).willReturn(true);
 
         //when
-        ResultActions resultActions = mvc.perform(put("/boards/{boardId}", boardUpdateDTO.getId())
+        ResultActions resultActions = mvc.perform(put("/boards")
                 .content(body)
                 .header(accessTokenHeader, token)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -232,7 +232,7 @@ class BoardControllerTest {
         given(jwtService.isUsable(any())).willReturn(true);
 
         //when
-        ResultActions resultActions = mvc.perform(delete("/boards/{boardId}", boardDeleteDTO.getId())
+        ResultActions resultActions = mvc.perform(delete("/boards")
                 .content(body)
                 .header(accessTokenHeader, token)
                 .contentType(MediaType.APPLICATION_JSON)
