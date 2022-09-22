@@ -1,8 +1,9 @@
 package anthill.Anthill.controller;
 
-import anthill.Anthill.dto.board.*;
-import anthill.Anthill.service.BoardService;
-import anthill.Anthill.service.JwtService;
+import anthill.Anthill.api.controller.BoardController;
+import anthill.Anthill.api.dto.board.*;
+import anthill.Anthill.api.service.BoardService;
+import anthill.Anthill.api.service.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

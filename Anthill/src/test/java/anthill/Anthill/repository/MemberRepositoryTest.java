@@ -1,7 +1,8 @@
 package anthill.Anthill.repository;
 
-import anthill.Anthill.domain.member.Address;
-import anthill.Anthill.domain.member.Member;
+import anthill.Anthill.db.domain.member.Address;
+import anthill.Anthill.db.domain.member.Member;
+import anthill.Anthill.db.repository.MemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,6 @@
 package anthill.Anthill.config;
 
-import anthill.Anthill.interceptor.PermissionInterceptor;
+import anthill.Anthill.api.interceptor.PermissionInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

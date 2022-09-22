@@ -1,11 +1,12 @@
 package anthill.Anthill.controller;
 
-import anthill.Anthill.domain.member.Address;
-import anthill.Anthill.dto.member.MemberLoginRequestDTO;
-import anthill.Anthill.dto.member.MemberRequestDTO;
-import anthill.Anthill.dto.member.MemberResponseDTO;
-import anthill.Anthill.service.JwtService;
-import anthill.Anthill.service.MemberService;
+import anthill.Anthill.api.controller.MemberController;
+import anthill.Anthill.db.domain.member.Address;
+import anthill.Anthill.api.dto.member.MemberLoginRequestDTO;
+import anthill.Anthill.api.dto.member.MemberRequestDTO;
+import anthill.Anthill.api.dto.member.MemberResponseDTO;
+import anthill.Anthill.api.service.JwtService;
+import anthill.Anthill.api.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

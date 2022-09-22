@@ -1,8 +1,9 @@
 package anthill.Anthill.repository;
 
-import anthill.Anthill.domain.board.Board;
-import anthill.Anthill.domain.member.Address;
-import anthill.Anthill.domain.member.Member;
+import anthill.Anthill.db.domain.board.Board;
+import anthill.Anthill.db.domain.member.Address;
+import anthill.Anthill.db.domain.member.Member;
+import anthill.Anthill.db.repository.BoardRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

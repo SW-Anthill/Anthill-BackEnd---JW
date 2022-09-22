@@ -1,10 +1,12 @@
 package anthill.Anthill.service;
 
-import anthill.Anthill.domain.member.Address;
-import anthill.Anthill.domain.member.Member;
-import anthill.Anthill.dto.member.MemberLoginRequestDTO;
-import anthill.Anthill.dto.member.MemberRequestDTO;
-import anthill.Anthill.repository.MemberRepository;
+import anthill.Anthill.api.service.MemberService;
+import anthill.Anthill.api.service.MemberServiceImpl;
+import anthill.Anthill.db.domain.member.Address;
+import anthill.Anthill.db.domain.member.Member;
+import anthill.Anthill.api.dto.member.MemberLoginRequestDTO;
+import anthill.Anthill.api.dto.member.MemberRequestDTO;
+import anthill.Anthill.db.repository.MemberRepository;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

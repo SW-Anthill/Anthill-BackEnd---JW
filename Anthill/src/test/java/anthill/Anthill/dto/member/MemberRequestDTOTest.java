@@ -1,12 +1,11 @@
 package anthill.Anthill.dto.member;
 
-import anthill.Anthill.domain.member.Address;
-import anthill.Anthill.domain.member.Member;
+import anthill.Anthill.api.dto.member.MemberRequestDTO;
+import anthill.Anthill.db.domain.member.Address;
+import anthill.Anthill.db.domain.member.Member;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class MemberRequestDTOTest {
 

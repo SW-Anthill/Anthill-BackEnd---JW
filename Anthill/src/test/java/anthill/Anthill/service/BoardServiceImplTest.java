@@ -1,17 +1,17 @@
 package anthill.Anthill.service;
 
-import anthill.Anthill.domain.board.Board;
-import anthill.Anthill.domain.member.Member;
-import anthill.Anthill.dto.board.*;
-import anthill.Anthill.repository.BoardRepository;
-import anthill.Anthill.repository.MemberRepository;
-import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
+import anthill.Anthill.api.dto.board.*;
+import anthill.Anthill.api.service.BoardService;
+import anthill.Anthill.api.service.BoardServiceImpl;
+import anthill.Anthill.db.domain.board.Board;
+import anthill.Anthill.db.domain.member.Member;
+import anthill.Anthill.db.repository.BoardRepository;
+import anthill.Anthill.db.repository.MemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 

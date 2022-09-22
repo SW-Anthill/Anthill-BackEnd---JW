@@ -1,6 +1,7 @@
 package anthill.Anthill.controller;
 
-import anthill.Anthill.service.MemberService;
+import anthill.Anthill.api.controller.MemberController;
+import anthill.Anthill.api.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

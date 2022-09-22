@@ -1,8 +1,9 @@
 package anthill.Anthill.controller;
 
-import anthill.Anthill.dto.member.MemberDuplicateResponseDTO;
-import anthill.Anthill.service.JwtService;
-import anthill.Anthill.service.MemberService;
+import anthill.Anthill.api.controller.DuplicateController;
+import anthill.Anthill.api.dto.member.MemberDuplicateResponseDTO;
+import anthill.Anthill.api.service.JwtService;
+import anthill.Anthill.api.service.MemberService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
